@@ -1,0 +1,20 @@
+# Python
+venv/
+server/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Flutter / Dart
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/build/
+app/ios/Pods/
+app/ios/.symlinks/
+app/ios/Flutter/Flutter.framework
+app/ios/Flutter/Flutter.podspec
+
+# OS
+.DS_Store
+
