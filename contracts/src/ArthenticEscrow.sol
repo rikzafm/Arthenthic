@@ -73,6 +73,7 @@ contract ArthenticEscrow is AttestationVerifier {
     event EscrowRefunded(uint256 indexed listingId, address indexed buyer, uint256 amount);
     event EscrowDisputed(uint256 indexed listingId, string reasonURI);
     event DisputeResolved(uint256 indexed listingId, bool releasedToSeller);
+    event AdminTransferred(address indexed previousAdmin, address indexed newAdmin);
 
     modifier nonReentrant() {
         if (_locked != 1) revert REENTRANCY();
@@ -269,6 +270,15 @@ contract ArthenticEscrow is AttestationVerifier {
             }
             nft.transferFrom(address(this), l.seller, l.tokenId);
         }
+    }
+
+    /// @notice J-01/Wave 3 Milestone 7: Transfer administrative dispute resolution authority to Gnosis Safe
+    function transferAdmin(address newAdmin) external {
+        if (msg.sender != admin) revert ACCESS_DENIED();
+        if (newAdmin == address(0)) revert ZERO_ADDRESS();
+        address oldAdmin = admin;
+        admin = newAdmin;
+        emit AdminTransferred(oldAdmin, newAdmin);
     }
 }
 
