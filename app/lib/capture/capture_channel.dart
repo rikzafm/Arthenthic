@@ -1,13 +1,17 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class CaptureChannel {
   static const MethodChannel _channel = MethodChannel('com.arthentic.app/capture');
   static const String arCameraViewType = 'com.arthentic.app/ar_camera_view';
 
+  static bool get isNativeIOs => !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
+
   static Future<bool> isLiDARAvailable() async {
+    if (!isNativeIOs) return false;
     try {
       final bool available = await _channel.invokeMethod('isLiDARAvailable');
       return available;
@@ -20,6 +24,7 @@ class CaptureChannel {
   }
 
   static Future<bool> isCameraAvailable() async {
+    if (!isNativeIOs) return false;
     try {
       final bool available = await _channel.invokeMethod('isCameraAvailable');
       return available;
@@ -31,6 +36,7 @@ class CaptureChannel {
   }
 
   static Future<bool> startSession() async {
+    if (!isNativeIOs) return true;
     try {
       final bool started = await _channel.invokeMethod('startSession');
       return started;
@@ -42,36 +48,45 @@ class CaptureChannel {
   }
 
   static Future<void> stopSession() async {
+    if (!isNativeIOs) return;
     try {
       await _channel.invokeMethod('stopSession');
     } catch (_) {}
   }
 
   static Future<Map<String, dynamic>> getLiveTelemetry() async {
-    try {
-      final Map<dynamic, dynamic>? res = await _channel.invokeMethod('getLiveTelemetry');
-      if (res != null) {
-        return Map<String, dynamic>.from(res);
-      }
-    } catch (_) {}
+    if (isNativeIOs) {
+      try {
+        final Map<dynamic, dynamic>? res = await _channel.invokeMethod('getLiveTelemetry');
+        if (res != null) {
+          return Map<String, dynamic>.from(res);
+        }
+      } catch (_) {}
+    }
 
     return {
       'distanceCm': 14,
       'focus': 'Locked',
       'steadiness': 'Good',
       'isLiDARActive': false,
+      'tiltDegrees': 0,
+      'pitch': 0,
+      'roll': 0,
+      'isLeveled': true,
     };
   }
 
   static Future<Map<String, dynamic>> capturePoint(int pointIndex) async {
-    try {
-      final Map<dynamic, dynamic>? res = await _channel.invokeMethod('capturePoint', {
-        'pointIndex': pointIndex,
-      });
-      if (res != null) {
-        return Map<String, dynamic>.from(res);
-      }
-    } catch (_) {}
+    if (isNativeIOs) {
+      try {
+        final Map<dynamic, dynamic>? res = await _channel.invokeMethod('capturePoint', {
+          'pointIndex': pointIndex,
+        });
+        if (res != null) {
+          return Map<String, dynamic>.from(res);
+        }
+      } catch (_) {}
+    }
 
     // Fallback simulated point capture with valid JPEG & Float32 depth buffer
     const base64Jpeg =
@@ -111,6 +126,8 @@ class CaptureChannel {
         'distanceCm': 14,
         'focus': 'Locked',
         'steadiness': 'Good',
+        'tiltDegrees': 0,
+        'isLeveled': true,
         'pointIndex': pointIndex,
       }
     };

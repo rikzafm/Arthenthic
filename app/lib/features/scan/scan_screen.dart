@@ -29,12 +29,18 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
   static const int totalPoints = 8;
   int currentPoint = 1; // Starts at Point 1 of 8
   int distanceCm = 14;
+  int tiltDegrees = 0;
+  int pitchDeg = 0;
+  int rollDeg = 0;
+  bool isLeveled = true;
   String focusStatus = "Locked";
   String steadinessStatus = "Good";
   bool isLiDAROn = true;
   bool isCapturing = false;
   bool isFlashing = false;
   bool hasLiveCamera = false;
+  bool isCoolingDown = false;
+  String? uploadErrorMsg;
   final List<String> _captureIds = [];
 
   static const Map<int, String> spatialPointNames = {
@@ -49,12 +55,22 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
   };
 
   Timer? _telemetryTimer;
+  Timer? _countdownTimer;
+  Timer? _cooldownTimer;
   AnimationController? _simulatedCameraController;
   final GlobalKey _viewfinderKey = GlobalKey();
   Rect? _viewfinderRect;
 
+  double countdownProgress = 0.0;
+  int _countdownElapsedMs = 0;
+  static const int countdownDurationMs = 800;
+  static const int cooldownDurationMs = 1500;
+
   bool get isDistanceOptimal => distanceCm >= 12 && distanceCm <= 16;
-  bool get isReadyToCapture => isDistanceOptimal && steadinessStatus == "Good";
+  bool get isTiltOptimal => tiltDegrees <= 12;
+  bool get isSteadinessOptimal => steadinessStatus == "Good";
+  bool get isSweetSpot => isDistanceOptimal && isTiltOptimal && isSteadinessOptimal;
+  bool get isReadyToCapture => isSweetSpot && !isCoolingDown && !isCapturing && uploadErrorMsg == null;
 
   @override
   void initState() {
@@ -100,7 +116,7 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
     }
 
     // Telemetry polling: Live telemetry on iOS, simulated handheld fluctuations in mock mode
-    _telemetryTimer = Timer.periodic(const Duration(milliseconds: 600), (_) async {
+    _telemetryTimer = Timer.periodic(const Duration(milliseconds: 400), (_) async {
       if (!mounted) return;
 
       if (hasLiveCamera) {
@@ -108,55 +124,122 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
         if (mounted) {
           setState(() {
             distanceCm = telemetry['distanceCm'] ?? 14;
+            tiltDegrees = telemetry['tiltDegrees'] ?? 0;
+            pitchDeg = telemetry['pitch'] ?? 0;
+            rollDeg = telemetry['roll'] ?? 0;
+            isLeveled = telemetry['isLeveled'] ?? (tiltDegrees <= 12);
             focusStatus = telemetry['focus'] ?? "Locked";
             steadinessStatus = telemetry['steadiness'] ?? "Good";
             isLiDAROn = telemetry['isLiDARActive'] ?? true;
           });
+          _checkAutoCapture();
         }
       } else {
         // Natural handheld slight fluctuation around optimal distance
         setState(() {
           distanceCm = 13 + Random().nextInt(3); // 13, 14, or 15 cm
+          tiltDegrees = Random().nextInt(5); // 0..4 degrees
+          pitchDeg = Random().nextInt(4) - 2;
+          rollDeg = Random().nextInt(4) - 2;
+          isLeveled = true;
           steadinessStatus = "Good";
           focusStatus = "Locked";
         });
+        _checkAutoCapture();
       }
     });
+  }
+
+  void _checkAutoCapture() {
+    if (!mounted) return;
+    if (isReadyToCapture) {
+      if (_countdownTimer == null) {
+        _countdownElapsedMs = 0;
+        _countdownTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+          if (!mounted) {
+            timer.cancel();
+            return;
+          }
+          if (!isReadyToCapture) {
+            _cancelCountdown();
+            return;
+          }
+          _countdownElapsedMs += 50;
+          setState(() {
+            countdownProgress = (_countdownElapsedMs / countdownDurationMs).clamp(0.0, 1.0);
+          });
+
+          // Heartbeat haptic ticks at 250ms, 500ms, 750ms
+          if (_countdownElapsedMs == 250 || _countdownElapsedMs == 500 || _countdownElapsedMs == 750) {
+            HapticFeedback.selectionClick();
+          }
+
+          if (_countdownElapsedMs >= countdownDurationMs) {
+            _cancelCountdown();
+            _performCapture();
+          }
+        });
+      }
+    } else {
+      _cancelCountdown();
+    }
+  }
+
+  void _cancelCountdown() {
+    _countdownTimer?.cancel();
+    _countdownTimer = null;
+    _countdownElapsedMs = 0;
+    if (countdownProgress != 0.0 && mounted) {
+      setState(() {
+        countdownProgress = 0.0;
+      });
+    }
   }
 
   @override
   void dispose() {
     _telemetryTimer?.cancel();
+    _countdownTimer?.cancel();
+    _cooldownTimer?.cancel();
     _simulatedCameraController?.dispose();
     CaptureChannel.stopSession();
     super.dispose();
   }
 
-  Future<void> _onShutterTap() async {
-    if (isCapturing) return;
-
-    if (!isReadyToCapture) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            distanceCm < 12
-                ? "Too close: Move camera back to 12-16 cm."
-                : (distanceCm > 16
-                    ? "Too far: Move camera closer (12-16 cm)."
-                    : "Hold steady until focus locks."),
-          ),
-          duration: const Duration(milliseconds: 1200),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
+  Future<String> _uploadWithRetry(Map<String, dynamic> cap) async {
+    int attempt = 0;
+    while (true) {
+      try {
+        final capId = await apiClient.uploadCapture(
+          photoBytes: cap['photoBytes'],
+          depthBytes: cap['depthBytes'],
+          intrinsics: cap['intrinsics'],
+          metadata: {
+            ...Map<String, dynamic>.from(cap['telemetry'] ?? {}),
+            'pointIndex': currentPoint,
+            'spatialName': spatialPointNames[currentPoint],
+          },
+        );
+        return capId;
+      } catch (e) {
+        attempt++;
+        if (attempt >= 3) {
+          rethrow;
+        }
+        await Future.delayed(Duration(milliseconds: 300 * (1 << attempt)));
+      }
     }
+  }
 
-    // Haptic feedback & camera flash
+  Future<void> _performCapture() async {
+    if (isCapturing) return;
+    _cancelCountdown();
+
     HapticFeedback.mediumImpact();
     setState(() {
       isCapturing = true;
       isFlashing = true;
+      uploadErrorMsg = null;
     });
 
     Future.delayed(const Duration(milliseconds: 120), () {
@@ -167,22 +250,25 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
 
     try {
       final cap = await CaptureChannel.capturePoint(currentPoint);
-      final capId = await apiClient.uploadCapture(
-        photoBytes: cap['photoBytes'],
-        depthBytes: cap['depthBytes'],
-        intrinsics: cap['intrinsics'],
-        metadata: {
-          ...Map<String, dynamic>.from(cap['telemetry'] ?? {}),
-          'pointIndex': currentPoint,
-          'spatialName': spatialPointNames[currentPoint],
-        },
-      );
+      final capId = await _uploadWithRetry(cap);
       _captureIds.add(capId);
 
       if (currentPoint < totalPoints) {
         setState(() {
           currentPoint++;
           isCapturing = false;
+          isCoolingDown = true;
+        });
+
+        // 1.5s transition cooldown before arming auto-capture again
+        _cooldownTimer?.cancel();
+        _cooldownTimer = Timer(const Duration(milliseconds: cooldownDurationMs), () {
+          if (mounted) {
+            setState(() {
+              isCoolingDown = false;
+            });
+            _checkAutoCapture();
+          }
         });
       } else {
         // Completed all 8 points: verify level 2 with multi-point capture IDs
@@ -205,9 +291,53 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
       }
     } catch (e) {
       if (mounted) {
-        setState(() => isCapturing = false);
+        setState(() {
+          isCapturing = false;
+          uploadErrorMsg = "Upload failed: Network timeout. Tap to retry.";
+        });
       }
     }
+  }
+
+  void _onRetakePreviousPoint() {
+    if (currentPoint <= 1 || isCapturing) return;
+    _cancelCountdown();
+    _cooldownTimer?.cancel();
+
+    setState(() {
+      if (_captureIds.isNotEmpty) {
+        _captureIds.removeLast();
+      }
+      currentPoint--;
+      isCoolingDown = false;
+      uploadErrorMsg = null;
+    });
+    _checkAutoCapture();
+  }
+
+  Future<void> _onShutterTap() async {
+    if (isCapturing) return;
+
+    if (!isSweetSpot) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            distanceCm < 12
+                ? "Too close: Move camera back to 12-16 cm."
+                : (distanceCm > 16
+                    ? "Too far: Move camera closer (12-16 cm)."
+                    : (!isTiltOptimal
+                        ? "Tilt camera flat to artwork surface."
+                        : "Hold steady until focus locks.")),
+          ),
+          duration: const Duration(milliseconds: 1200),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    _performCapture();
   }
 
   @override
@@ -285,7 +415,7 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
               SafeArea(
                 child: Column(
                   children: [
-                    // Top Bar: Cancel + Point Tracker
+                    // Top Bar: Cancel + Point Tracker + Retake Action
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                       child: Row(
@@ -310,6 +440,36 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
                               color: Colors.white.withOpacity(0.9),
                             ),
                           ),
+                          if (currentPoint > 1)
+                            GestureDetector(
+                              key: const Key('retake_button'),
+                              onTap: _onRetakePreviousPoint,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF334155).withOpacity(0.85),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.white24, width: 0.8),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.undo_rounded, size: 13, color: Colors.white70),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      "Retake Pt ${currentPoint - 1}",
+                                      style: GoogleFonts.inter(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          else
+                            const SizedBox(width: 50),
                         ],
                       ),
                     ),
@@ -430,10 +590,10 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: isDistanceOptimal
+                            color: isSweetSpot
                                 ? const Color(0xFF4ADE80).withOpacity(0.6)
                                 : Colors.white.withOpacity(0.2),
-                            width: isDistanceOptimal ? 2.0 : 1.0,
+                            width: isSweetSpot ? 2.0 : 1.0,
                           ),
                         ),
                         child: Stack(
@@ -441,33 +601,20 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
                             // Reticle Grid lines & Corner brackets
                             CustomPaint(
                               size: Size(viewfinderSize, viewfinderSize),
-                              painter: GridReticlePainter(isLocked: isDistanceOptimal),
+                              painter: GridReticlePainter(isLocked: isSweetSpot),
                             ),
 
-                            // Center Target Reticle
+                            // Center Target Reticle with Countdown Progress & Leveling Bubble
                             Center(
-                              child: Container(
-                                width: 48,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: isDistanceOptimal
-                                        ? const Color(0xFF4ADE80)
-                                        : Colors.white.withOpacity(0.85),
-                                    width: 1.5,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Container(
-                                    width: 6,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                      color: isDistanceOptimal
-                                          ? const Color(0xFF4ADE80)
-                                          : Colors.white,
-                                      shape: BoxShape.circle,
-                                    ),
+                              child: SizedBox(
+                                width: 56,
+                                height: 56,
+                                child: CustomPaint(
+                                  painter: CountdownReticlePainter(
+                                    progress: countdownProgress,
+                                    isOptimal: isSweetSpot,
+                                    tiltOffsetX: rollDeg.toDouble() * 1.2,
+                                    tiltOffsetY: pitchDeg.toDouble() * 1.2,
                                   ),
                                 ),
                               ),
@@ -497,7 +644,7 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
                         color: const Color(0xFF1C1E38).withOpacity(0.92),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: isDistanceOptimal
+                          color: isSweetSpot
                               ? const Color(0xFF4ADE80).withOpacity(0.3)
                               : Colors.white.withOpacity(0.10),
                         ),
@@ -512,12 +659,18 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
                                 : AppTheme.bubbleYellow,
                           ),
                           _buildDivider(),
-                          _buildTelemetryColumn("Focus", focusStatus, Colors.white),
+                          _buildTelemetryColumn(
+                            "Tilt",
+                            "$tiltDegrees°",
+                            isTiltOptimal
+                                ? const Color(0xFF4ADE80)
+                                : AppTheme.bubbleYellow,
+                          ),
                           _buildDivider(),
                           _buildTelemetryColumn(
                             "Steadiness",
                             steadinessStatus,
-                            steadinessStatus == "Good" ? const Color(0xFF4ADE80) : AppTheme.bubbleYellow,
+                            isSteadinessOptimal ? const Color(0xFF4ADE80) : AppTheme.bubbleYellow,
                           ),
                         ],
                       ),
@@ -525,25 +678,82 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
 
                     SizedBox(height: isCompact ? 8 : 14),
 
-                    // Instruction Prompt with distance guidance
-                    Text(
-                      isDistanceOptimal
-                          ? "Steady on ${spatialPointNames[currentPoint]}. Ready to capture."
-                          : (distanceCm < 12
-                              ? "Too close ($distanceCm cm) · Move back to 12-16 cm."
-                              : "Too far ($distanceCm cm) · Move closer to 12-16 cm."),
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: isDistanceOptimal
-                            ? const Color(0xFF4ADE80)
-                            : Colors.white.withOpacity(0.85),
+                    // Instruction Prompt or Error Banner
+                    if (uploadErrorMsg != null)
+                      Container(
+                        key: const Key('upload_error_banner'),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEF4444).withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.error_outline, color: Colors.white, size: 16),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                uploadErrorMsg!,
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              key: const Key('retry_upload_button'),
+                              onTap: () {
+                                setState(() => uploadErrorMsg = null);
+                                _performCapture();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  "Retry",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFFEF4444),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    else
+                      Text(
+                        isCoolingDown
+                            ? "Point ${currentPoint - 1} captured! Move to ${spatialPointNames[currentPoint]}..."
+                            : (countdownProgress > 0
+                                ? "Holding steady... Capturing (${(countdownProgress * 100).toInt()}%)"
+                                : (distanceCm < 12
+                                    ? "Too close ($distanceCm cm) · Move back to 12-16 cm."
+                                    : (distanceCm > 16
+                                        ? "Too far ($distanceCm cm) · Move closer to 12-16 cm."
+                                        : (!isTiltOptimal
+                                            ? "Tilt phone flat to surface ($tiltDegrees° / max 12°)"
+                                            : (steadinessStatus != "Good"
+                                                ? "Hold steady on ${spatialPointNames[currentPoint]}..."
+                                                : "Steady on ${spatialPointNames[currentPoint]}. Ready to capture."))))),
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: isSweetSpot
+                              ? const Color(0xFF4ADE80)
+                              : Colors.white.withOpacity(0.85),
+                        ),
                       ),
-                    ),
 
                     SizedBox(height: isCompact ? 12 : 18),
 
-                    // Large Shutter Button (Quality Gated)
+                    // Large Shutter Button (Quality Gated with Auto/Manual Support)
                     GestureDetector(
                       key: const Key('shutter_button'),
                       onTap: _onShutterTap,
@@ -579,7 +789,18 @@ class _ScanScreenState extends State<ScanScreen> with SingleTickerProviderStateM
                                       ),
                                     ),
                                   )
-                                : null,
+                                : (countdownProgress > 0
+                                    ? Center(
+                                        child: Text(
+                                          "${(countdownProgress * 100).toInt()}%",
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w800,
+                                            color: const Color(0xFF131427),
+                                          ),
+                                        ),
+                                      )
+                                    : null),
                           ),
                         ),
                       ),
@@ -870,4 +1091,68 @@ class GridReticlePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant GridReticlePainter oldDelegate) =>
       oldDelegate.isLocked != isLocked;
+}
+
+class CountdownReticlePainter extends CustomPainter {
+  final double progress;
+  final bool isOptimal;
+  final double tiltOffsetX;
+  final double tiltOffsetY;
+
+  CountdownReticlePainter({
+    required this.progress,
+    required this.isOptimal,
+    this.tiltOffsetX = 0.0,
+    this.tiltOffsetY = 0.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+
+    // Outer target circle
+    final outerPaint = Paint()
+      ..color = isOptimal ? const Color(0xFF4ADE80) : Colors.white.withOpacity(0.85)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+    canvas.drawCircle(center, radius - 4, outerPaint);
+
+    // Countdown progress arc (fills from -90 degrees)
+    if (progress > 0.0) {
+      final countdownPaint = Paint()
+        ..color = const Color(0xFF4ADE80)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4.5
+        ..strokeCap = StrokeCap.round;
+
+      final rect = Rect.fromCircle(center: center, radius: radius);
+      canvas.drawArc(rect, -pi / 2, 2 * pi * progress, false, countdownPaint);
+    }
+
+    // Directional leveling bubble (offset by pitch/roll)
+    final bubbleOffset = Offset(
+      center.dx + tiltOffsetX.clamp(-14.0, 14.0),
+      center.dy + tiltOffsetY.clamp(-14.0, 14.0),
+    );
+
+    final bubblePaint = Paint()
+      ..color = isOptimal ? const Color(0xFF4ADE80) : AppTheme.bubbleYellow
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(bubbleOffset, 4.5, bubblePaint);
+
+    // Bullseye center reticle
+    final bullseyePaint = Paint()
+      ..color = Colors.white.withOpacity(0.35)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    canvas.drawCircle(center, 7, bullseyePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CountdownReticlePainter oldDelegate) =>
+      oldDelegate.progress != progress ||
+      oldDelegate.isOptimal != isOptimal ||
+      oldDelegate.tiltOffsetX != tiltOffsetX ||
+      oldDelegate.tiltOffsetY != tiltOffsetY;
 }

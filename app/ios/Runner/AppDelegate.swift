@@ -121,7 +121,9 @@ public class CaptureChannel: NSObject, FlutterPlugin, ARSessionDelegate {
                 "distanceCm": 14,
                 "focus": "Locked",
                 "steadiness": "Good",
-                "isLiDARActive": false
+                "isLiDARActive": false,
+                "tiltDegrees": 0,
+                "isLeveled": true
             ])
             return
         }
@@ -177,11 +179,23 @@ public class CaptureChannel: NSObject, FlutterPlugin, ARSessionDelegate {
             focus = "Seeking"
         }
 
+        let euler = frame.camera.eulerAngles
+        // Calculate tilt deviation (pitch and roll combined) relative to perpendicular orientation
+        let pitch = Double(euler.x) * 180.0 / .pi
+        let roll = Double(euler.z) * 180.0 / .pi
+        let tiltMagnitude = sqrt(pitch * pitch + roll * roll)
+        let tiltDegrees = Int(round(tiltMagnitude))
+        let isLeveled = tiltDegrees <= 12
+
         result([
             "distanceCm": distanceCm,
             "focus": focus,
             "steadiness": steadiness,
-            "isLiDARActive": hasLiDAR
+            "isLiDARActive": hasLiDAR,
+            "tiltDegrees": tiltDegrees,
+            "pitch": Int(round(pitch)),
+            "roll": Int(round(roll)),
+            "isLeveled": isLeveled
         ])
     }
 

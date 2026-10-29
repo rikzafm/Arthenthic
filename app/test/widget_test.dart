@@ -1,9 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:app/main.dart';
+import 'package:app/services/app_lock_service.dart';
 
 void main() {
+  setUp(() {
+    FlutterSecureStorage.setMockInitialValues({});
+    appLockService.isGuest = false;
+  });
+
   testWidgets('Arthentic App smoke test - Verify screen and Navigation', (WidgetTester tester) async {
-    await tester.pumpWidget(const ArthenticApp());
+    await tester.pumpWidget(const ArthenticApp(home: MainTabShell()));
     await tester.pumpAndSettle();
 
     // Verify Brand & Hero Tagline on Home Screen
@@ -37,6 +44,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Test Navigation to Scan Surface Screen
+    await tester.ensureVisible(find.text('Scan surface'));
     await tester.tap(find.text('Scan surface'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
@@ -44,7 +52,7 @@ void main() {
     // Verify Scan Screen elements
     expect(find.text('Point 1 of 8'), findsOneWidget);
     expect(find.text('Distance'), findsOneWidget);
-    expect(find.text('Focus'), findsOneWidget);
+    expect(find.text('Tilt'), findsOneWidget);
     expect(find.text('Steadiness'), findsOneWidget);
     expect(find.textContaining('Top-Left Corner', findRichText: true), findsWidgets);
 

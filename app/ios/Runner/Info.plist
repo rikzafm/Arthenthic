@@ -30,6 +30,10 @@
 	<string>Arthentic reads NFC tags to verify physical artwork authenticity.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Arthentic uses the camera and LiDAR scanner to capture canvas surface relief and microscopic weave fingerprints.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Arthentic uses Face ID or Touch ID to securely unlock your wallet, certificates, and accredited tools.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
