@@ -1,9 +1,11 @@
 # Python
 venv/
+.venv/
 server/venv/
 __pycache__/
 *.pyc
 .pytest_cache/
+*.db
 
 # Flutter / Dart
 app/.dart_tool/
@@ -17,4 +19,15 @@ app/ios/Flutter/Flutter.podspec
 
 # OS
 .DS_Store
+
+# Foundry / Solidity
+out/
+cache/
+contracts/out/
+contracts/cache/
+
+# Agents / AI
+.agents/
+.gemini/
+
 

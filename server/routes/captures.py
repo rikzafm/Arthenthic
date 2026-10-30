@@ -1,10 +1,15 @@
 import json
 import uuid
+import hashlib
+import numpy as np
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 from typing import Optional, Dict, Any
+from sqlalchemy.orm import Session as DBSession
+
 from server.ml.embedder import embedder
 from server.ml.depth_features import depth_extractor
-from server.storage import store
+from server.db.database import get_db
+from server.db.models import CaptureRecord
 from server.routes.verify import get_current_user
 
 router = APIRouter(prefix="/v1/captures", tags=["captures"])
@@ -15,11 +20,13 @@ async def upload_capture(
     depth: Optional[UploadFile] = File(None),
     intrinsics: str = Form(...),
     metadata: Optional[str] = Form("{}"),
-    user: Dict[str, Any] = Depends(get_current_user)
+    user: Dict[str, Any] = Depends(get_current_user),
+    db: DBSession = Depends(get_db),
 ):
     """
     Upload raw capture (photo + depth map + camera intrinsics + quality metadata).
-    Server processes photo texture embedding and 3D depth relief statistics.
+    Server processes photo texture embedding and 3D depth relief statistics,
+    and persists the record to the relational database (CaptureRecord).
     """
     capture_id = f"cap_{uuid.uuid4().hex[:12]}"
 
@@ -55,14 +62,29 @@ async def upload_capture(
     except Exception:
         meta_dict = {}
 
-    store.captures[capture_id] = {
-        "captureId": capture_id,
-        "vector": vector,
-        "depth_stats": depth_stats,
-        "intrinsics": intrinsics_dict,
-        "metadata": meta_dict,
-        "uploaded_by": user.get("address")
-    }
+    vector_list = vector.tolist() if hasattr(vector, "tolist") else list(vector)
+    vec_bytes = np.array(vector, dtype=np.float32).tobytes()
+    vector_hash = "0x" + hashlib.sha256(vec_bytes).hexdigest()
+    point_index = int(meta_dict.get("pointIndex", meta_dict.get("point_index", 1)))
+    relief_roughness = float(depth_stats.get("relief_roughness", 0.45))
+    flat_print_passed = bool(depth_stats.get("flat_print_passed", True))
+    has_lidar = bool(depth is not None)
+
+    record = CaptureRecord(
+        id=capture_id,
+        point_index=point_index,
+        vector_hash=vector_hash,
+        relief_roughness=relief_roughness,
+        flat_print_passed=flat_print_passed,
+        has_lidar=has_lidar,
+        vector=vector_list,
+        depth_stats=depth_stats,
+        intrinsics=intrinsics_dict,
+        metadata_payload=meta_dict,
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
 
     return {"captureId": capture_id}
 

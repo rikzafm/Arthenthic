@@ -1,0 +1,106 @@
+name: Arthentic Unified Monorepo CI/CD
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # -------------------------------------------------------------
+  # Pillar 3: Solidity Smart Contracts (Foundry)
+  # -------------------------------------------------------------
+  contracts-foundry:
+    name: Pillar 3 - Solidity Contracts & Foundry Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Check Solc Compilation & Build
+        run: |
+          forge build --sizes
+
+      - name: Run Foundry Unit, Fuzz & Invariant Tests
+        run: |
+          forge test -vvv
+
+      - name: Verify Synced ABIs
+        working-directory: .
+        run: |
+          python3 scripts/sync_abis.py
+          git diff --exit-code server/contracts/abi/ app/lib/contracts/abi/
+
+  # -------------------------------------------------------------
+  # Pillar 2: FastAPI Modular Monolith (Python / Pytest)
+  # -------------------------------------------------------------
+  backend-pytest:
+    name: Pillar 2 - FastAPI Backend & Architecture Smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Backend Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r server/requirements.txt
+          pip install psycopg2-binary redis
+
+      - name: Run Pytest Test Suite
+        env:
+          DATABASE_URL: "sqlite:///./arthentic_ci.db"
+          JWT_SECRET_KEY: "ci-secret-key-at-least-32-chars-long-test"
+        run: |
+          pytest server/tests -v
+
+      - name: Run End-to-End Full-Stack Smoke Runner
+        env:
+          DATABASE_URL: "sqlite:///./arthentic_ci.db"
+        run: |
+          python3 scripts/verify_full_stack.py
+
+  # -------------------------------------------------------------
+  # Pillar 1: Unified Flutter Client (iOS + Web)
+  # -------------------------------------------------------------
+  client-flutter:
+    name: Pillar 1 - Unified Flutter Mobile & Web Client
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.x"
+          channel: "stable"
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Flutter Widget & Unit Tests
+        run: flutter test
+
+      - name: Build Flutter Web (Production Staging)
+        run: flutter build web --release --no-tree-shake-icons
+

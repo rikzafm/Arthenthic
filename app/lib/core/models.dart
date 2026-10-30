@@ -1,3 +1,11 @@
+class ArtworkStatus {
+  static const String CLEAR = "CLEAR";
+  static const String CHIP_REPLACED = "CHIP_REPLACED";
+  static const String UNSYNCHRONIZED_OWNERSHIP = "UNSYNCHRONIZED_OWNERSHIP";
+  static const String FLAGGED = "FLAGGED";
+  static const String DESTROYED = "DESTROYED";
+}
+
 class ArtworkInfo {
   final String tokenId;
   final String title;
@@ -25,17 +33,22 @@ class SunParams {
   final String uid;
   final int ctr;
   final String cmac;
+  final String tamperStatus;
 
   SunParams({
     required this.uid,
     required this.ctr,
     required this.cmac,
+    this.tamperStatus = 'TAMPER_OK',
   });
+
+  bool get isTampered => tamperStatus.toUpperCase() == 'TAMPER_PERM_OPEN';
 
   Map<String, dynamic> toJson() => {
     'uid': uid,
     'ctr': ctr,
     'cmac': cmac,
+    'tamperStatus': tamperStatus,
   };
 
   factory SunParams.fromJson(Map<String, dynamic> json) {
@@ -43,6 +56,7 @@ class SunParams {
       uid: json['uid'] ?? '',
       ctr: json['ctr'] is int ? json['ctr'] : int.tryParse('${json['ctr']}') ?? 0,
       cmac: json['cmac'] ?? '',
+      tamperStatus: json['tamperStatus'] ?? 'TAMPER_OK',
     );
   }
 }

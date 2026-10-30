@@ -9,6 +9,7 @@ from server.ml.embedder import embedder, EXTRACTOR_VERSION
 from server.ml.depth_features import depth_extractor
 from server.ml.similarity import similarity_engine
 from server.storage import store
+from server.db.seed import seed_dev_users
 
 client = TestClient(app)
 
@@ -62,6 +63,13 @@ class TestMultiPointSpatialVerification:
     @pytest.fixture(autouse=True)
     def setup_artwork(self):
         """Enroll an 8-point baseline artwork token for testing."""
+        seed_dev_users()
+        login_res = client.post("/auth/login", json={"email": "artist@arthentic.io", "password": "Artist123!"})
+        headers = {}
+        if login_res.status_code == 200:
+            headers = {"Authorization": f"Bearer {login_res.json()['access_token']}"}
+        self.headers = headers
+
         intrinsics = json.dumps({"fx": 1420.5, "fy": 1420.5, "cx": 64.0, "cy": 64.0})
         
         genesis_capture_ids = []
@@ -76,7 +84,7 @@ class TestMultiPointSpatialVerification:
                 "intrinsics": intrinsics,
                 "metadata": json.dumps({"pointIndex": pt, "distanceCm": 14, "steadiness": "Good"})
             }
-            res = client.post("/v1/captures", files=files, data=data)
+            res = client.post("/v1/captures", files=files, data=data, headers=headers)
             assert res.status_code == 200
             genesis_capture_ids.append(res.json()["captureId"])
 
@@ -85,7 +93,7 @@ class TestMultiPointSpatialVerification:
             "captureIds": genesis_capture_ids,
             "title": "Starry Night Spatial Test",
             "artist": "Vincent van Gogh"
-        })
+        }, headers=headers)
         assert res_gen.status_code == 200
         self.token_id = res_gen.json()["tokenId"]
         self.genesis_capture_ids = genesis_capture_ids
@@ -109,7 +117,8 @@ class TestMultiPointSpatialVerification:
                 "intrinsics": intrinsics,
                 "metadata": json.dumps({"pointIndex": pt, "distanceCm": 14, "steadiness": "Good"})
             }
-            res = client.post("/v1/captures", files=files, data=data)
+            res = client.post("/v1/captures", files=files, data=data, headers=self.headers)
+            assert res.status_code == 200
             verify_capture_ids.append(res.json()["captureId"])
 
         # Level 2 verify with all 8 capture IDs
@@ -117,7 +126,7 @@ class TestMultiPointSpatialVerification:
             "tokenId": self.token_id,
             "captureIds": verify_capture_ids,
             "extractorVersion": EXTRACTOR_VERSION
-        })
+        }, headers=self.headers)
         assert res_v2.status_code == 200
         data = res_v2.json()
         assert data["isAuthentic"] is True
@@ -150,14 +159,15 @@ class TestMultiPointSpatialVerification:
                 "intrinsics": intrinsics,
                 "metadata": json.dumps({"pointIndex": pt, "distanceCm": 14, "steadiness": "Good"})
             }
-            res = client.post("/v1/captures", files=files, data=data)
+            res = client.post("/v1/captures", files=files, data=data, headers=self.headers)
+            assert res.status_code == 200
             verify_capture_ids.append(res.json()["captureId"])
 
         res_v2 = client.post("/v1/verify/level2", json={
             "tokenId": self.token_id,
             "captureIds": verify_capture_ids,
             "extractorVersion": EXTRACTOR_VERSION
-        })
+        }, headers=self.headers)
         assert res_v2.status_code == 200
         data = res_v2.json()
         assert data["isAuthentic"] is True
@@ -183,14 +193,15 @@ class TestMultiPointSpatialVerification:
                 "intrinsics": intrinsics,
                 "metadata": json.dumps({"pointIndex": pt, "distanceCm": 14, "steadiness": "Good"})
             }
-            res = client.post("/v1/captures", files=files, data=data)
+            res = client.post("/v1/captures", files=files, data=data, headers=self.headers)
+            assert res.status_code == 200
             verify_capture_ids.append(res.json()["captureId"])
 
         res_v2 = client.post("/v1/verify/level2", json={
             "tokenId": self.token_id,
             "captureIds": verify_capture_ids,
             "extractorVersion": EXTRACTOR_VERSION
-        })
+        }, headers=self.headers)
         assert res_v2.status_code == 200
         data = res_v2.json()
         assert data["isAuthentic"] is False
@@ -215,15 +226,135 @@ class TestMultiPointSpatialVerification:
                 "intrinsics": intrinsics,
                 "metadata": json.dumps({"pointIndex": pt, "distanceCm": 14, "steadiness": "Good"})
             }
-            res = client.post("/v1/captures", files=files, data=data)
+            res = client.post("/v1/captures", files=files, data=data, headers=self.headers)
+            assert res.status_code == 200
             verify_capture_ids.append(res.json()["captureId"])
 
         res_v2 = client.post("/v1/verify/level2", json={
             "tokenId": self.token_id,
             "captureIds": verify_capture_ids,
             "extractorVersion": EXTRACTOR_VERSION
-        })
+        }, headers=self.headers)
         assert res_v2.status_code == 200
         data = res_v2.json()
         assert data["isAuthentic"] is False
         assert data["branches"]["flatPrintPassed"] is False
+
+
+class TestVerificationRejectionsAndMissingResources:
+    """
+    Milestone 5 strict verification rejection tests:
+    Ensures missing artworks, captures, and chips return HTTP 404 (never dummy 200),
+    and unauthenticated get_current_user calls return HTTP 401.
+    """
+
+    @pytest.fixture(autouse=True)
+    def setup_auth(self):
+        seed_dev_users()
+        login_res = client.post("/auth/login", json={"email": "collector@arthentic.io", "password": "Collector123!"})
+        assert login_res.status_code == 200
+        self.auth_headers = {"Authorization": f"Bearer {login_res.json()['access_token']}"}
+
+    def test_level2_missing_artwork_returns_404(self):
+        res = client.post("/v1/verify/level2", json={
+            "tokenId": "9999999",
+            "captureId": "cap_101_pt1",
+            "extractorVersion": EXTRACTOR_VERSION
+        }, headers=self.auth_headers)
+        assert res.status_code == 404
+        data = res.json()
+        assert data["detail"]["error"]["code"] == "ARTWORK_NOT_FOUND"
+        assert "9999999 not found" in data["detail"]["error"]["message"]
+
+    def test_level2_missing_capture_returns_404(self):
+        res = client.post("/v1/verify/level2", json={
+            "tokenId": "101",
+            "captureId": "cap_non_existent_123456",
+            "extractorVersion": EXTRACTOR_VERSION
+        }, headers=self.auth_headers)
+        assert res.status_code == 404
+        data = res.json()
+        assert data["detail"]["error"]["code"] == "CAPTURE_NOT_FOUND"
+        assert "cap_non_existent_123456 not found" in data["detail"]["error"]["message"]
+
+    def test_level1_missing_artwork_or_chip_returns_404(self):
+        sim_res = client.get("/v1/verify/simulate-sun")
+        assert sim_res.status_code == 200
+        sun_params = sim_res.json()
+
+        # Non-existent tokenId
+        res_token = client.post("/v1/verify/level1", json={
+            "sunParams": sun_params,
+            "tokenId": "9999999"
+        }, headers=self.auth_headers)
+        assert res_token.status_code == 404
+        assert res_token.json()["detail"] == "Artwork or NFC chip not found"
+
+        # Non-enrolled chip UID
+        unbound_params = {**sun_params, "uid": "04FFEEDDCCBBAA"}
+        res_chip = client.post("/v1/verify/level1", json={
+            "sunParams": unbound_params,
+            "tokenId": "101"
+        }, headers=self.auth_headers)
+        assert res_chip.status_code == 404
+        assert res_chip.json()["detail"] == "Artwork or NFC chip not found"
+
+    def test_public_guest_verify_unenrolled_chip_returns_404(self):
+        from server.crypto.sun import sun_verifier
+        params = sun_verifier.generate_sun_params("04UNKNOWNCHIP01")
+        res = client.post("/v1/verify/public", json={
+            "uid": params["uid"],
+            "ctr": params["ctr"],
+            "cmac": params["cmac"],
+        })
+        assert res.status_code == 404
+        assert res.json()["detail"] == "NFC Chip not found or not enrolled"
+
+    def test_public_guest_verify_chip_with_missing_artwork_returns_404(self):
+        from server.db.database import SessionLocal
+        from server.db.models import NfcChip
+        db = SessionLocal()
+        orphaned_uid = "04ORPHANCHIP99"
+        chip = db.query(NfcChip).filter(NfcChip.chip_uid == orphaned_uid).first()
+        if not chip:
+            db.add(NfcChip(
+                chip_uid=orphaned_uid,
+                chip_id_hash="0xorphan99",
+                token_id=888888,
+                is_active=True
+            ))
+            db.commit()
+        db.close()
+
+        from server.crypto.sun import sun_verifier
+        params = sun_verifier.generate_sun_params(orphaned_uid)
+        res = client.post("/v1/verify/public", json={
+            "uid": params["uid"],
+            "ctr": params["ctr"],
+            "cmac": params["cmac"],
+        })
+        assert res.status_code == 404
+        assert res.json()["detail"] == "Artwork not found"
+
+    def test_genesis_coa_missing_token_returns_404(self):
+        res = client.get("/v1/genesis/coa/9999999")
+        assert res.status_code == 404
+        assert res.json()["detail"] == "Artwork not found"
+
+    def test_artworks_missing_token_returns_404(self):
+        res = client.get("/v1/artworks/9999999")
+        assert res.status_code == 404
+        assert res.json()["detail"] == "Artwork not found"
+
+    def test_get_current_user_unauthenticated_raises_401(self):
+        from server.routes.verify import get_current_user
+        from fastapi import HTTPException
+        with pytest.raises(HTTPException) as exc_info:
+            get_current_user(authorization=None)
+        assert exc_info.value.status_code == 401
+        assert exc_info.value.detail == "Unauthorized"
+
+        with pytest.raises(HTTPException) as exc_info2:
+            get_current_user(authorization="Bearer invalid_token_xyz")
+        assert exc_info2.value.status_code == 401
+

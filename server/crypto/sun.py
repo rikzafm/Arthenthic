@@ -58,6 +58,24 @@ class SunVerifier:
         self._seen_counters[uid] = ctr
         return True, None
 
+    def verify_sun_with_tamper(
+        self,
+        uid: str,
+        ctr: int,
+        cmac: str,
+        tamper_status: str = "TAMPER_OK",
+    ) -> Tuple[bool, Optional[str], bool]:
+        """
+        Verify SUN authenticity, anti-replay, and tamper-loop status (B-05 / D-01 / D-02).
+        Returns: (is_valid, error_reason, is_tampered)
+        """
+        is_tampered = (str(tamper_status).upper() == "TAMPER_PERM_OPEN")
+        if is_tampered:
+            return False, "Tamper loop permanently opened: physical chip compromise detected", True
+
+        valid, err = self.verify_sun(uid, ctr, cmac)
+        return valid, err, False
+
     def reset_counter(self, uid: str):
         if uid in self._seen_counters:
             del self._seen_counters[uid]

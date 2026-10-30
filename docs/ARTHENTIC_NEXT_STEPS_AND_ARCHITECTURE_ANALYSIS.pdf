@@ -1,0 +1,1490 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [ 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R 22 0 R 24 0 R 26 0 R 28 0 R 30 0 R 32 0 R ] /Count 13 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+7 0 obj
+<< /Length 8919 >>
+stream
+0.067 0.094 0.153 rg 42.00 628.00 528.00 112.00 re f
+0.831 0.686 0.216 rg 42.00 628.00 5.00 112.00 re f
+BT /F2 8.50 Tf 0.831 0.686 0.216 rg 58.00 720.00 Td (ARTHENTIC PROTOCOL  |  MASTER ARCHITECTURE & IMPLEMENTATION BLUEPRINT) Tj ET
+BT /F2 16.50 Tf 1.000 1.000 1.000 rg 58.00 700.00 Td (Next-Steps Roadmap, 6-Layer System Blueprint &) Tj ET
+BT /F2 16.50 Tf 1.000 1.000 1.000 rg 58.00 680.00 Td (Unified Monorepo Architecture \(Mobile + Web + Chain\)) Tj ET
+BT /F1 8.50 Tf 0.780 0.820 0.880 rg 58.00 658.00 Td (Synthesized from UML Part 1 \(11 Modules, 9 Actors\), Sequence & DB Design \(SD-01..12, 40 PG Tables, 6 Redis Keys\),) Tj ET
+BT /F1 8.50 Tf 0.780 0.820 0.880 rg 58.00 645.00 Td (Locked ADRs \(ADR-01..09\), and Current Prototype Audit \(Flutter iOS/Web + FastAPI Modular Monolith + Base L2 / Eth L1\)) Tj ET
+0.980 0.970 0.930 rg 42.00 468.00 528.00 144.00 re f
+0.50 w 0.880 0.820 0.650 RG 42.00 468.00 528.00 144.00 re S
+0.831 0.686 0.216 rg 42.00 468.00 3.50 144.00 re f
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 599.00 Td (Document Scope: Exhaustive engineering and architectural blueprint derived from) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 587.00 Td (ARTHENTIC_MASTER_IMPLEMENTATION_AND_BUSINESS_PLAN.md, Arthentic_UML_Diagrams_Part_1.pdf \(9 Actors, 11 Use-Case) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 575.00 Td (Modules UC-A-UC-L, 3 Class Diagrams, 48 Activity Diagrams\), Arthentic_Sequence_and_Database_Design.pdf \(12) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 563.00 Td (Sequence Diagrams SD-01-SD-12, 40 PostgreSQL 16 Tables across 6 ERDs, 6 Redis Hot-Path Keys, 9 Core Invariants\),) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 551.00 Td (and the current Arthenthic-Mobile repository \(app/ Flutter + server/ FastAPI\).) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 539.00 Td () Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 527.00 Td (Core Questions Answered:) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 515.00 Td (1. What is the current implementation state and what are the exact next steps?) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 503.00 Td (2. What other infrastructure, cryptographic, and blockchain layers need to be built?) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 491.00 Td (3. How does the Web Client fit in, and how can Mobile, Web, Backend, Protocol Node, Indexer, Paymaster, and) Tj ET
+BT /F3 8.80 Tf 0.220 0.200 0.140 rg 54.00 479.00 Td (Smart Contracts all be implemented in one unified codebase?) Tj ET
+0.090 0.130 0.220 rg 42.00 426.00 528.00 24.00 re f
+0.831 0.686 0.216 rg 42.00 426.00 4.00 24.00 re f
+BT /F2 11.50 Tf 1.000 1.000 1.000 rg 54.00 433.00 Td (Table of Contents) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 407.00 Td (1.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 407.00 Td (Executive Summary & Current Codebase Audit Matrix) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 391.80 Td (2.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 391.80 Td (Part I:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 87.39 391.80 Td ( Prioritized Next Steps -- Step-by-Step Engineering Roadmap) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 376.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 376.60 Td (Step 1:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 100.89 376.60 Td ( Smart Contract Layer \(Phase B1 -- Base L2 & Ethereum L1\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 361.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 361.40 Td (Step 2:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 100.89 361.40 Td ( Hardware Sensor Pipeline, Multi-Actor Genesis Intake & CoA \(Phases M2 & M3 / UC-B\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 346.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 346.20 Td (Step 3:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 100.89 346.20 Td ( Post-Sale Restoration Lifecycle & 3-of-3 Chip Swap \(Phase M5 / UC-E & UC-F\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 331.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 331.00 Td (Step 4:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 100.89 331.00 Td ( Role Dashboards, Status Badges & Paymaster Fallback \(Phase M6 / UC-D, UC-K, UC-L\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 315.80 Td (3.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 315.80 Td (Part II:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 92.16 315.80 Td ( Deep Dive into the 6 Additional Architecture Layers \(Phases B1-B6\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 300.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 300.60 Td (Layer 1:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 105.66 300.60 Td ( Smart Contract Layer \(contracts/\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 285.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 285.40 Td (Layer 2:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 105.66 285.40 Td ( Production Data & Hot-Path Cache Layer \(PostgreSQL 16 + Redis 7\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 270.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 270.20 Td (Layer 3:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 105.66 270.20 Td ( Protocol Node & HSM/KMS Security Layer \(server/node/\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 255.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 255.00 Td (Layer 4:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 105.66 255.00 Td ( Reorg-Safe Chain Event Indexer & L1 Merkle Batcher \(server/indexer/\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 239.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 239.80 Td (Layer 5:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 105.66 239.80 Td ( ERC-4337 Paymaster & Hybrid Meta-Transaction Relayer \(server/paymaster/\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 224.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 224.60 Td (Layer 6:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 105.66 224.60 Td ( Institutional Web Consoles \(web/ / Flutter Web\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 209.40 Td (4.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 209.40 Td (Part III:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 96.93 209.40 Td ( The Web Client -- Portals, Workflows & Role Matrix) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 194.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 194.20 Td (Why the Web Client is Essential to Arthentic) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 179.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 179.00 Td (Portal 1:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 110.43 179.00 Td ( Gallery & Verifier Institutional Console \(VERIFIER_ROLE + Gnosis Safe\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 163.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 163.80 Td (Portal 2:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 110.43 163.80 Td ( Conservator Studio Console \(CONSERVATOR_ROLE\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 148.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 148.60 Td (Portal 3:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 110.43 148.60 Td ( Protocol Admin Governance & Incident Console \(DEFAULT_ADMIN_ROLE\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 133.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 133.40 Td (Portal 4:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 110.43 133.40 Td ( Zero-Install Public NFC Tap & CoA Web Viewer \(D-14*, B-12\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 118.20 Td (5.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 118.20 Td (Part IV:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 92.16 118.20 Td ( Implementing Everything in One Unified Codebase \(Monorepo Blueprint\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 103.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 103.00 Td (Architectural Strategy:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 177.21 103.00 Td ( 3 Pillars in 1 Repository) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 87.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 87.80 Td (Pillar 1:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 110.43 87.80 Td ( Unified Client \(app/ -- Flutter iOS + Flutter Web\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 72.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 72.60 Td (Pillar 2:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 110.43 72.60 Td ( Unified Backend \(server/ -- FastAPI Modular Monolith\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 57.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 57.40 Td (Pillar 3:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 110.43 57.40 Td ( Smart Contract Workspace \(contracts/ -- Foundry Solidity\)) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 1 of 13) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 13032 >>
+stream
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 731.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 731.00 Td (Complete Unified Monorepo Directory Structure) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 715.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 715.80 Td (8-Week Execution & Integration Schedule) Tj ET
+0.090 0.130 0.220 rg 42.00 677.60 528.00 24.00 re f
+0.831 0.686 0.216 rg 42.00 677.60 4.00 24.00 re f
+BT /F2 11.50 Tf 1.000 1.000 1.000 rg 54.00 684.60 Td (1. Executive Summary & Current Codebase Audit Matrix) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 650.60 Td (1.1 Current State of Arthenthic-Mobile) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 646.60 m 570.00 646.60 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 629.60 Td (The current repository already implements a strong vertical slice of the Mobile App \(app/\) and FastAPI Backend) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 617.40 Td (\(server/\), backed by 65 passing backend unit/integration tests and 9 locked Architectural Decision Records \(ADR-01) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 605.20 Td (through ADR-09\).) Tj ET
+0.970 0.980 1.000 rg 42.00 471.00 528.00 128.00 re f
+0.70 w 0.780 0.830 0.900 RG 42.00 471.00 528.00 128.00 re S
+BT /F2 8.20 Tf 0.100 0.180 0.350 rg 52.00 586.00 Td (ARCHITECTURE DIAGRAM 1: PROTOTYPE STATUS VS. NEXT DELIVERY TRACKS) Tj ET
+0.920 0.980 0.940 rg 52.00 483.00 158.00 94.00 re f
+0.90 w 0.200 0.650 0.380 RG 52.00 483.00 158.00 94.00 re S
+BT /F2 8.00 Tf 0.080 0.420 0.220 rg 59.00 565.00 Td (1. COMPLETED IN PROTOTYPE) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 554.00 Td (* M1: Email + Google/Apple OAuth) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 544.00 Td (* Face ID Lock + MetaMask SIWE) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 534.00 Td (* Core UC-D: SUN + 8-Pt LiDAR ML) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 524.00 Td (* EIP-712 Attestation Signer) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 514.00 Td (* M4: UC-C Escrow \(93.5/5/1.5\)) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 504.00 Td (* C-12 Check + ETH/USDC DEX Swap) Tj ET
+1.20 w 0.250 0.350 0.550 RG 210.00 547.00 m 224.00 547.00 l S
+1.20 w 0.250 0.350 0.550 RG 224.00 547.00 m 220.00 549.80 l S
+1.20 w 0.250 0.350 0.550 RG 224.00 547.00 m 220.00 544.20 l S
+0.930 0.960 1.000 rg 224.00 483.00 158.00 94.00 re f
+0.90 w 0.220 0.450 0.800 RG 224.00 483.00 158.00 94.00 re S
+BT /F2 8.00 Tf 0.100 0.280 0.580 rg 231.00 565.00 Td (2. NEXT CLIENT MODULES \(app/\)) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 231.00 554.00 Td (* M2: CoreNFC Chip Writer \(B-05\)) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 231.00 544.00 Td (* M3: Gallery Intake + B-07 Co-Sign) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 231.00 534.00 Td (* B-12 Public CoA Integrity View) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 231.00 524.00 Td (* M5: E-07 Owner Consent + F-05 3/3) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 231.00 514.00 Td (* M6: L-07/L-09 Dashboards + K-04) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 231.00 504.00 Td (* B6: Flutter Web Safe/Admin Portals) Tj ET
+1.20 w 0.250 0.350 0.550 RG 382.00 547.00 m 396.00 547.00 l S
+1.20 w 0.250 0.350 0.550 RG 396.00 547.00 m 392.00 549.80 l S
+1.20 w 0.250 0.350 0.550 RG 396.00 547.00 m 392.00 544.20 l S
+0.990 0.960 0.900 rg 396.00 483.00 158.00 94.00 re f
+0.90 w 0.800 0.550 0.150 RG 396.00 483.00 158.00 94.00 re S
+BT /F2 8.00 Tf 0.550 0.350 0.050 rg 403.00 565.00 Td (3. NEXT CHAIN & NODE LAYERS) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 403.00 554.00 Td (* B1: ArthenticNFT & Escrow .sol) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 403.00 544.00 Td (* B1: Ethereum L1 MerkleAnchor.sol) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 403.00 534.00 Td (* B2: 40 PG16 Tables + 6 Redis Keys) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 403.00 524.00 Td (* B3: KMS/HSM Signer + Arweave) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 403.00 514.00 Td (* B4: Reorg Indexer + L1 Batcher) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 403.00 504.00 Td (* B5: ERC-4337 Paymaster \(K-01..05\)) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 444.00 Td (1.2 Detailed Feature & File Audit Matrix) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 440.00 m 570.00 440.00 l S
+0.100 0.150 0.250 rg 42.00 403.40 528.00 28.60 re f
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 47.00 420.30 Td (Use-Case Module & Spec IDs) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 168.44 420.30 Td (Existing Files in) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 168.44 410.50 Td (Arthenthic-Mobile) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 420.30 Td (Completion) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 410.50 Td (%) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 337.40 420.30 Td (Exact Remaining Engineering Work) Tj ET
+1.000 1.000 1.000 rg 42.00 335.60 528.00 67.80 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 335.60 121.44 67.80 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 391.70 Td (UC-A: Accounts, Auth, OAuth) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 381.90 Td (& Wallets) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 372.10 Td (A-01, A-05-A-10 | SD-01 |) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 362.30 Td (ERD 1 \(7 tables\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 335.60 116.16 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 391.70 Td (server/routes/auth.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 381.90 Td (server/auth/metamask.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 372.10 Td (server/routes/roles.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 362.30 Td (app/lib/features/auth/*) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 352.50 Td (app/lib/features/wallet/*) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 335.60 52.80 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 391.70 Td (85%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 335.60 237.60 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 391.70 Td (- Wire live WalletConnect v2 \(reown_appkit\) deep-link) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 381.90 Td (callbacks on physical iOS.) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 372.10 Td (- Add ERC-4337 Passkey Smart Wallet factory \(Coinbase) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 362.30 Td (Smart Wallet\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 352.50 Td (- Sync on-chain RoleGranted/RoleRevoked events into) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 342.70 Td (role_grants.) Tj ET
+0.965 0.975 0.990 rg 42.00 258.00 528.00 77.60 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 258.00 121.44 77.60 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 323.90 Td (UC-B: Artwork Intake &) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 314.10 Td (Genesis Mint) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 304.30 Td (B-01-B-05, B-07, B-08, B-12) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 294.50 Td (| SD-02 | ERD 2 \(10 tables\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 258.00 116.16 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 323.90 Td (server/routes/genesis.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 314.10 Td (app/lib/features/scan/scan_screen.dart) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 258.00 52.80 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 323.90 Td (50%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 258.00 237.60 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 323.90 Td (- Separate Gallery Intake Dossier \(B-01\) from Artist) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 314.10 Td (EIP-712 Co-Sign \(B-07\) and Gallery Safe genesisMint\(\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 304.30 Td (\(B-08\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 294.50 Td (- Add CoreNFC NTAG 424 DNA key provisioning \(B-05\) and) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 284.70 Td (Arweave/IPFS upload \(B-04\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 274.90 Td (- Build Certificate of Authenticity Screen \(B-12\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 265.10 Td (verifying keccak256\(metadata\) == genesisHash.) Tj ET
+1.000 1.000 1.000 rg 42.00 200.00 528.00 58.00 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 200.00 121.44 58.00 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 246.30 Td (UC-C: Escrow Trading, Tap) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 236.50 Td (Claim & DEX Swap) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 226.70 Td (C-01, C-03*, C-04, C-06,) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 216.90 Td (C-10, C-12 | SD-03, SD-04 |) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 207.10 Td (ERD 3 \(3 tables\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 200.00 116.16 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 246.30 Td (server/routes/marketplace.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 236.50 Td (app/lib/features/marketplace/marketplace_screen.dart) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 226.70 Td (server/tests/test_marketplace.py) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 200.00 52.80 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 246.30 Td (90%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 200.00 237.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 246.30 Td (- Connect off-chain marketplace state to deployed) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 236.50 Td (ArthenticEscrow.sol on Base L2 Sepolia.) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 226.70 Td (- Add shipments carrier tracking webhook/UI and automated) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 216.90 Td (post-expiry refund\(\) trigger.) Tj ET
+0.965 0.975 0.990 rg 42.00 142.00 528.00 58.00 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 142.00 121.44 58.00 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 188.30 Td (UC-D: Authenticity) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 178.50 Td (Verification \(L1 & L2\)) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 168.70 Td (D-01, D-02, D-04-D-06, D-09,) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 158.90 Td (D-14*, D-15* | SD-05, SD-06) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 149.10 Td (| ERD 4) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 142.00 116.16 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 188.30 Td (server/routes/verify.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 178.50 Td (server/crypto/sun.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 168.70 Td (server/ml/embedder.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 158.90 Td (app/lib/features/result/result_screen.dart) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 142.00 52.80 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 188.30 Td (80%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 142.00 237.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 188.30 Td (- Move SUN counter lock to Redis \(sun:ctr:{chipId}\) +) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 178.50 Td (atomic SQL check.) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 168.70 Td (- Build StatusBadgeWidget \(D-15*: Clear, Destroyed,) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 158.90 Td (Flagged, Chip-Replaced, Unsynchronized Ownership\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 149.10 Td (- Wire on-chain recordVerification\(\) transaction \(D-04\).) Tj ET
+1.000 1.000 1.000 rg 42.00 84.00 528.00 58.00 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 84.00 121.44 58.00 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 130.30 Td (UC-E: Conservation &) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 120.50 Td (Condition Updates) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 110.70 Td (E-01-E-04, E-06, E-07* |) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 100.90 Td (SD-07 | ERD 5 \(4 tables\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 84.00 116.16 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 130.30 Td (server/routes/genesis.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 120.50 Td (\(/v1/conservation/* stubs\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 84.00 52.80 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 130.30 Td (35%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 84.00 237.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 130.30 Td (- Build Owner-to-Conservator request workflow \(E-01\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 120.50 Td (- Build Collector EIP-712 Owner Consent Screen \(E-07* /) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 110.70 Td (ADR-03\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 100.90 Td (- Build side-by-side Genesis vs. Restoration History View) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 91.10 Td (\(E-06\).) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 2 of 13) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 9588 >>
+stream
+0.100 0.150 0.250 rg 42.00 711.40 528.00 28.60 re f
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 47.00 728.30 Td (Use-Case Module & Spec IDs) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 168.44 728.30 Td (Existing Files in) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 168.44 718.50 Td (Arthenthic-Mobile) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 728.30 Td (Completion) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 718.50 Td (%) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 337.40 728.30 Td (Exact Remaining Engineering Work) Tj ET
+0.965 0.975 0.990 rg 42.00 653.40 528.00 58.00 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 653.40 121.44 58.00 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 699.70 Td (UC-F: Damaged NFC Chip) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 689.90 Td (Replacement) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 680.10 Td (F-05 | SD-08 | ERD 2) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 670.30 Td (\(chip_replacements,) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 660.50 Td (chip_approvals\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 653.40 116.16 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 699.70 Td (server/auth/metamask.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 689.90 Td (\(F-05 action definition\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 653.40 52.80 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 699.70 Td (25%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 653.40 237.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 699.70 Td (- Build 3-of-3 Multi-Approval Tracker UI & API \(F-05\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 689.90 Td (collecting Collector \(1/3\), Artist \(2/3\), and Verifier) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 680.10 Td (\(3/3\) EIP-712 signatures + L2 optical proof \(>= 8800 bps\).) Tj ET
+1.000 1.000 1.000 rg 42.00 605.20 528.00 48.20 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 605.20 121.44 48.20 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 641.70 Td (UC-H & UC-I: Provenance,) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 631.90 Td (Attestation & L1 Anchor) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 622.10 Td (H-03, H-05, I-01, I-02 |) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 612.30 Td (SD-10, SD-12 | ERD 4) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 605.20 116.16 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 641.70 Td (server/crypto/attestation.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 631.90 Td (app/lib/features/provenance/provenance_screen.dart) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 605.20 52.80 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 641.70 Td (55%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 605.20 237.60 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 641.70 Td (- Deploy MerkleAnchor.sol on Ethereum L1 Sepolia \(H-05\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 631.90 Td (- Build background batch worker \(every 1,000 events or) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 622.10 Td (24h\) and Merkle inclusion proof badge on ProvenanceScreen.) Tj ET
+0.965 0.975 0.990 rg 42.00 537.40 528.00 67.80 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 537.40 121.44 67.80 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 593.50 Td (UC-J, UC-K & UC-L:) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 583.70 Td (Governance, Paymaster &) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 573.90 Td (Dashboards) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 564.10 Td (J-01, J-05, K-01-K-05, L-07,) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 554.30 Td (L-09 | SD-09, SD-11 | ERD 6) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 537.40 116.16 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 593.50 Td (server/routes/admin.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 583.70 Td (app/lib/features/home/home_screen.dart) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 537.40 52.80 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 593.50 Td (40%) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 537.40 237.60 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 593.50 Td (- Build ERC-4337 Paymaster policy/quota engine \(K-01-K-05\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 583.70 Td (& Self-Pay fallback modal \(K-04\).) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 573.90 Td (- Build dedicated Artist \(L-07\) & Collector \(L-09\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 564.10 Td (dashboards.) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 554.30 Td (- Build Admin Incident Console \(J-05\) & Gallery Safe Web) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 544.50 Td (Console.) Tj ET
+0.090 0.130 0.220 rg 42.00 495.40 528.00 24.00 re f
+0.831 0.686 0.216 rg 42.00 495.40 4.00 24.00 re f
+BT /F2 11.50 Tf 1.000 1.000 1.000 rg 54.00 502.40 Td (2. Part I: Prioritized Next Steps -- Step-by-Step Engineering Roadmap) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 476.40 Td (To transition from the current prototype to a full end-to-end Base L2 + Ethereum L1 testnet deployment, development) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 464.20 Td (should proceed in four sequential engineering steps.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 441.00 Td (2.1 Step 1: Smart Contract Layer \(Phase B1 -- Base L2 & Ethereum L1\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 437.00 m 570.00 437.00 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 420.00 Td (The highest-leverage next step is creating the contracts/ workspace using Foundry \(forge\) and Solidity ^0.8.24 with) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 407.80 Td (OpenZeppelin v5 Upgradeable contracts. All 9 locked ADRs \(ADR-01-ADR-09\) directly shape these contracts:) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 387.60 Td (1. contracts/src/Roles.sol) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 372.60 Td (Defines role constants shared across ArthenticNFT and ArthenticEscrow:) Tj ET
+0.070 0.100 0.160 rg 42.00 239.40 528.00 127.00 re f
+0.130 0.180 0.270 rg 42.00 351.40 528.00 15.00 re f
+BT /F2 7.20 Tf 0.831 0.686 0.216 rg 52.00 355.90 Td (CODE / STRUCTURE \(SOLIDITY\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 341.40 Td (// SPDX-License-Identifier: MIT) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 331.20 Td (pragma solidity ^0.8.24;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 321.00 Td () Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 310.80 Td (library Roles {) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 300.60 Td (    bytes32 internal constant ARTIST_ROLE        = keccak256\("ARTIST_ROLE"\);) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 290.40 Td (    bytes32 internal constant VERIFIER_ROLE      = keccak256\("VERIFIER_ROLE"\);) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 280.20 Td (    bytes32 internal constant CONSERVATOR_ROLE   = keccak256\("CONSERVATOR_ROLE"\);) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 270.00 Td (    bytes32 internal constant PROTOCOL_NODE_ROLE = keccak256\("PROTOCOL_NODE_ROLE"\);) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 259.80 Td (    bytes32 internal constant ANCHORER_ROLE      = keccak256\("ANCHORER_ROLE"\);) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 249.60 Td (}) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 217.40 Td (2. contracts/src/AttestationVerifier.sol) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 202.40 Td (Abstract EIP-712 verifier inherited by both ArthenticNFT and ArthenticEscrow:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 187.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 187.20 Td (Constants:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 101.70 187.20 Td ( uint16 public constant MIN_SIMILARITY_BPS = 8800; \(88.0% optical + LiDAR surface match threshold\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 172.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 172.00 Td (State:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 82.62 172.00 Td ( mapping\(uint256 => bool\) public usedNonce;) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 156.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 156.80 Td (Struct:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 87.39 156.80 Td () Tj ET
+0.070 0.100 0.160 rg 42.00 54.20 528.00 96.40 re f
+0.130 0.180 0.270 rg 42.00 135.60 528.00 15.00 re f
+BT /F2 7.20 Tf 0.831 0.686 0.216 rg 52.00 140.10 Td (CODE / STRUCTURE \(SOLIDITY\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 125.60 Td (  struct Attestation {) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 115.40 Td (      uint256 tokenId;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 105.20 Td (      bytes32 sunDigest;      // keccak256\(abi.encodePacked\(uid, counter, cmac\)\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 95.00 Td (      uint16  similarityBps;  // 0 for L1 NFC tap; 8800..10000 for L2 Optical scan) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 84.80 Td (      uint64  deadline;       // block.timestamp + 300s short validity window) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 74.60 Td (      uint256 nonce;          // single-use anti-replay random uint256) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 64.40 Td (  }) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 3 of 13) Tj ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 9336 >>
+stream
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 731.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 731.00 Td (Verification Invariants \(_verifyAttestation\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 268.65 731.00 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 715.80 Td (1.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 715.80 Td (Reverts with ATTESTATION_EXPIRED\(\) if block.timestamp > a.deadline.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 700.60 Td (2.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 700.60 Td (Reverts with REPLAY\(\) if usedNonce[a.nonce] is true.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 685.40 Td (3.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 685.40 Td (Reverts with SIMILARITY_BELOW_THRESHOLD\(\) if requireOptical && a.similarityBps < MIN_SIMILARITY_BPS.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 670.20 Td (4.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 670.20 Td (Recovers signer = ECDSA.recover\(_hashTypedDataV4\(structHash\), sig\) and reverts with INVALID_SIGNER\(\) unless) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 658.00 Td (hasRole\(Roles.PROTOCOL_NODE_ROLE, signer\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 642.80 Td (5.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 642.80 Td (Marks usedNonce[a.nonce] = true before any external call \(Checks-Effects-Interactions\).) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 622.60 Td (3. contracts/src/ArthenticNFT.sol \(Base L2 -- UUPS Upgradeable\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 607.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 607.60 Td (Inheritance:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 111.24 607.60 Td ( UUPSUpgradeable, ERC721URIStorageUpgradeable, ERC2981Upgradeable, AccessControlUpgradeable,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 595.40 Td (PausableUpgradeable, AttestationVerifier.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 580.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 580.20 Td (Core State:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 106.47 580.20 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 565.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 565.00 Td (mapping\(bytes32 => bool\) public chipBound; \(Invariant SC-CHIP-01: a physical chip can never be bound to two) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 552.80 Td (artworks\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 537.60 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 537.60 Td (mapping\(uint256 => bytes32\) public genesisHash; \(Immutable once set in genesisMint -- Invariant SC-GEN-01\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 522.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 522.40 Td (mapping\(uint256 => bytes32\) public activeChip;) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 507.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 507.20 Td (mapping\(uint256 => bool\) public destroyed;) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 492.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 492.00 Td (Key Functions & ADR Enforcement:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 206.64 492.00 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 476.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 476.80 Td (genesisMint\(address artist, bytes32 genesisVectorHash, bytes32 chipIdHash, string calldata metadataURI, bytes) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 464.60 Td (calldata artistSig\) \(onlyRole\(VERIFIER_ROLE\)\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 449.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 449.40 Td (Enforces hasRole\(ARTIST_ROLE, artist\), !chipBound[chipIdHash], and genesisVectorHash != bytes32\(0\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 434.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 72.00 434.20 Td (ADR-02 Enforcement:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 162.63 434.20 Td ( Verifies ECDSA.recover\(genesisDossierDigest, artistSig\) == artist on-chain so a Gallery) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 422.00 Td (cannot mint without the Artist's EIP-712 co-signature \(B-07\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 406.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 406.80 Td (Mints tokenId to artist, sets _setTokenRoyalty\(tokenId, artist, 500\) \(5.0% ERC-2981 royalty\), and emits) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 394.60 Td (GenesisRegistered.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 379.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 379.40 Td (updateCondition\(uint256 tokenId, bytes32 newVectorHash, string calldata noteURI, bytes calldata) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 367.20 Td (ownerConsentSig\) \(onlyRole\(CONSERVATOR_ROLE\)\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 352.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 352.00 Td (Enforces !destroyed[tokenId] and leaves genesisHash[tokenId] untouched.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 336.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 72.00 336.80 Td (ADR-03 Enforcement:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 162.63 336.80 Td ( Verifies ECDSA.recover\(consentDigest, ownerConsentSig\) == ownerOf\(tokenId\) on-chain) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 324.60 Td (\(E-07*\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 309.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 309.40 Td (Emits ConditionUpdated\(tokenId, newVectorHash, msg.sender, noteURI, block.timestamp\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 294.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 294.20 Td (replaceChip\(uint256 tokenId, bytes32 newChipIdHash, Attestation calldata optical, bytes calldata nodeSig,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 282.00 Td (bytes[3] calldata approvals\) \(onlyRole\(VERIFIER_ROLE\)\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 266.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 266.80 Td (Calls _verifyAttestation\(optical, nodeSig, true\) \(similarityBps >= 8800\), checks !chipBound[newChipIdHash],) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 254.60 Td (and verifies 3 distinct EIP-712 signatures from ownerOf\(tokenId\) \(Collector\), VERIFIER_ROLE \(Gallery\), and) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 242.40 Td (original ARTIST_ROLE \(F-05\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 227.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 227.20 Td (Unbinds old chip, binds newChipIdHash, and emits ChipReplaced.) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 207.00 Td (4. contracts/src/ArthenticEscrow.sol \(Base L2 -- Pausable, ReentrancyGuard\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 192.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 192.00 Td (Key Functions & ADR Enforcement:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 206.64 192.00 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 176.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 176.80 Td (createListing\(uint256 tokenId, address currency, uint256 price, uint64 expiry\): Transfers NFT into escrow) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 164.60 Td (custody \(status = Status.Listed\). Supports native Base ETH \(address\(0\)\) and USDC \(ADR-04\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 149.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 149.40 Td (cancelListing\(uint256 listingId\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 220.41 149.40 Td ( Seller reclaims NFT if status == Status.Listed \(C-03*\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 134.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 134.20 Td (deposit\(uint256 listingId, bytes calldata permit2Data\) \(payable\): Buyer locks funds \(status = Status.Funded,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 122.00 Td (C-04\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 106.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 106.80 Td (claim\(uint256 listingId, Attestation calldata a, bytes calldata sig\) \(nonReentrant, C-06\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 91.60 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 91.60 Td (Verifies msg.sender == listing.buyer, status == Status.Funded, and _verifyAttestation\(a, sig, false\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 76.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 72.00 76.40 Td (ADR-05 3-Way Atomic Split:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 196.02 76.40 Td ( Calculates artistRoyalty = \(price * 500\) / 10000 \(5.0%\), protocolFee = \(price *) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 64.20 Td (150\) / 10000 \(1.5% to treasurySafe\), and sellerNet = price - artistRoyalty - protocolFee \(93.5% to seller\).) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 4 of 13) Tj ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 8752 >>
+stream
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 60.00 731.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 72.00 731.00 Td (Transfers NFT to buyer, distributes funds, and emits ClaimCompleted.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 715.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 715.80 Td (refund\(uint256 listingId\) \(nonReentrant\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 258.57 715.80 Td ( If block.timestamp > listing.expiry and status == Status.Funded,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 703.60 Td (returns 100% of funds to buyer and returns the NFT to seller.) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 683.40 Td (5. contracts/src/MerkleAnchor.sol \(Ethereum L1\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 668.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 668.40 Td (Anchors batched Base L2 provenance events onto Ethereum L1 \(H-05\):) Tj ET
+0.070 0.100 0.160 rg 42.00 586.20 528.00 76.00 re f
+0.130 0.180 0.270 rg 42.00 647.20 528.00 15.00 re f
+BT /F2 7.20 Tf 0.831 0.686 0.216 rg 52.00 651.70 Td (CODE / STRUCTURE \(SOLIDITY\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 637.20 Td (  function anchorRoot\(bytes32 root, uint64 fromBlock, uint64 toBlock\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 627.00 Td (      external onlyRole\(Roles.ANCHORER_ROLE\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 616.80 Td (  {) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 606.60 Td (      emit RootAnchored\(root, fromBlock, toBlock, uint64\(block.timestamp\)\);) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 596.40 Td (  }) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 561.20 Td (2.2 Step 2: Hardware Sensor Pipeline, Multi-Actor Genesis Intake & CoA \(Phases M2 & M3 / UC-B\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 557.20 m 570.00 557.20 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 540.20 Td (Currently, POST /v1/genesis/prepare in server/routes/genesis.py combines intake and preparation into a single step.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 528.00 Td (To match SD-02 and UC-B:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 512.80 Td (1.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 512.80 Td (CoreNFC NTAG 424 DNA Provisioning & Parsing \(app/lib/services/nfc_service.dart\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 497.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 497.60 Td (Reader Mode \(D-01\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 158.13 497.60 Td ( Parses dynamic NDEF URL) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 485.40 Td (https://verify.arthentic.io/?uid=<7B_hex>&ctr=<3B_hex>&cmac=<8B_hex> generated on every tap.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 470.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 470.20 Td (Provisioning Writer Mode \(B-05\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 220.14 470.20 Td ( Used by Galleries during intake to read the tag's 7-byte UID, compute) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 458.00 Td (chipIdHash = keccak256\(uid\), query ArthenticNFT.chipBound\(chipIdHash\) to prevent duplicate binding, and) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 445.80 Td (configure SDM \(Secure Dynamic Messaging\) keys via KMS.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 430.60 Td (2.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 430.60 Td (Three-Stage Genesis UI & API \(app/lib/features/genesis/ & server/routes/genesis.py\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 415.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 415.40 Td (Stage 1 -- Gallery Intake Dossier \(B-01-B-05\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 282.15 415.40 Td ( Gallery enters artwork metadata \(title, artist_wallet, medium,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 403.20 Td (width_cm, height_cm, year_created, condition_notes\), captures 5-10 micro-point macro + LiDAR depth scans) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 391.00 Td (\(B-02\), uploads immutable metadata/vectors to Arweave/IPFS \(B-04\), and binds the NFC chip \(B-05\). Status) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 378.80 Td (becomes AWAITING_ARTIST_COSIGN.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 363.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 363.60 Td (Stage 2 -- Artist EIP-712 Co-Signature \(B-07\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 282.15 363.60 Td ( Artist sees a pending co-sign card on their Home/Wallet screen,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 351.40 Td (inspects the human-readable dossier \(genesisVectorHash, chipIdHash, 5.0% ERC-2981 royalty\), and signs via) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 339.20 Td (MetaMask \(eth_signTypedData_v4\). Status becomes READY_FOR_SAFE_MINT.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 324.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 324.00 Td (Stage 3 -- Gallery Safe Mint \(B-08\) & Public CoA Screen \(B-12\): Gallery executes genesisMint\(\). Any user) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 311.80 Td (opening the Certificate of Authenticity Screen \(B-12\) sees the full provenance dossier while the client) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 299.60 Td (recomputes keccak256\(canonicalMetadata\) against onchain.genesisHash\(tokenId\) and renders a green) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 287.40 Td ("Cryptographic Hash Verified" badge \(or a red "Metadata Integrity Mismatch" warning if altered\).) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 264.20 Td (2.3 Step 3: Post-Sale Restoration Lifecycle & 3-of-3 Chip Swap \(Phase M5 / UC-E & UC-F\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 260.20 m 570.00 260.20 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 243.20 Td (1.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 243.20 Td (End-to-End Restoration Workflow \(E-01-E-07*, SD-07\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 228.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 228.00 Td (POST /v1/conservation/requests \(E-01\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 248.76 228.00 Td ( Collector selects an accredited Conservator) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 215.80 Td (\(hasRole\(CONSERVATOR_ROLE\)\) and submits damage photos/notes.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 200.60 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 200.60 Td (POST /v1/conservation/requests/{id}/scan \(E-02, E-04\): Conservator completes physical restoration, re-scans) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 188.40 Td (the 5-10 micro-points \(newVectorHash\), and uploads the treatment report \(noteURI\) to Arweave.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 173.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 173.20 Td (POST /v1/conservation/requests/{id}/owner-consent \(E-07* / ADR-03\): Collector reviews the before/after visual) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 161.00 Td (comparison and signs an EIP-712 OwnerConsent\(tokenId, newVectorHash, noteURI, nonce, deadline\) payload in) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 148.80 Td (MetaMask.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 133.60 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 133.60 Td (POST /v1/conservation/requests/{id}/finalize \(E-03\): Conservator submits) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 121.40 Td (ArthenticNFT.updateCondition\(tokenId, newVectorHash, noteURI, ownerConsentSig\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 106.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 106.20 Td (Restoration Timeline UI \(E-06\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 215.37 106.20 Td ( Displays the immutable genesisHash alongside every chronological) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 94.00 Td (ConditionUpdated entry so future L2 scans compare against the latest authorized post-restoration vector while) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 81.80 Td (preserving original creation proof.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 66.60 Td (2.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 66.60 Td (3-of-3 Chip Replacement Workflow \(F-05, SD-08\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 278.19 66.60 Td () Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 5 of 13) Tj ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Length 9942 >>
+stream
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 731.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 731.00 Td (When a physical NTAG 424 DNA tag is damaged, no single actor can swap the chip \(preventing a rogue gallery or) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 718.80 Td (owner from moving an NFT identity onto a fake painting\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 703.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 703.60 Td (Optical Gate:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 129.51 703.60 Td ( Gallery performs an L2 8-point LiDAR/macro scan of the canvas; Protocol Node verifies) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 691.40 Td (similarityBps >= 8800 against genesisHash and issues an optical Attestation.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 676.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 676.20 Td (3-of-3 Approval Tracker \(chip_replacements + chip_approvals tables\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 661.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 661.00 Td (Approval 1/3:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 138.51 661.00 Td ( Current Collector \(ownerOf\(tokenId\)\) signs EIP-712 ChipReplacementApproval.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 645.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 645.80 Td (Approval 2/3:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 138.51 645.80 Td ( Original Artist \(ARTIST_ROLE\) signs EIP-712 ChipReplacementApproval.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 630.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 630.60 Td (Approval 3/3:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 138.51 630.60 Td ( Accredited Verifier Gallery \(VERIFIER_ROLE\) signs EIP-712 ChipReplacementApproval and) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 76.50 618.40 Td (executes replaceChip\(tokenId, newChipIdHash, opticalAttestation, nodeSig, approvals\).) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 595.20 Td (2.4 Step 4: Role Dashboards, Status Badges & Paymaster Fallback \(Phase M6 / UC-D, UC-K, UC-L\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 591.20 m 570.00 591.20 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 574.20 Td (1.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 574.20 Td (Unified Artwork Status Badge System \(D-15*\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 263.88 574.20 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 559.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 559.00 Td (Every scan result, CoA, and marketplace card renders deterministic status badges:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 543.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 543.80 Td (CLEAR \(Green\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 143.28 543.80 Td ( Active chip bound, ownerOf synchronized, L1/L2 verification passed.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 528.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 528.60 Td (CHIP_REPLACED \(Blue Info\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 200.52 528.60 Td ( Chip replaced via F-05 3-of-3 governance; full audit trail linked.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 513.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 513.40 Td (UNSYNCHRONIZED_OWNERSHIP \(C-12 Amber/Red\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 276.84 513.40 Td ( Physical possessor or seller wallet does not match on-chain) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 76.50 501.20 Td (ArthenticNFT.ownerOf\(tokenId\) -- blocks off-chain payment.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 486.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 486.00 Td (FLAGGED \(Orange\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 157.59 486.00 Td ( Under active J-05 security investigation or anomalous SUN replay burst.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 470.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 470.80 Td (DESTROYED \(Red\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 152.82 470.80 Td ( Marked destroyed on-chain via markDestroyed\(tokenId, proofURI\) -- permanently blocks) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 76.50 458.60 Td (listing, deposit, and condition updates.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 443.40 Td (2.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 443.40 Td (Artist Dashboard \(L-07\) & Collector Dashboard \(L-09\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 428.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 428.20 Td (Artist View \(L-07\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 158.13 428.20 Td ( Total works minted, active primary/secondary listings, and historical + claimable 5%) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 416.00 Td (ERC-2981 royalties indexed from ClaimCompleted events.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 400.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 67.50 400.80 Td (Collector View \(L-09\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 172.44 400.80 Td ( Portfolio valuation, active escrow deliveries with countdown timers to expiry) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 388.60 Td (\(enabling 1-click refund\(\) if undelivered\), restoration history, and verification log.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 373.40 Td (3.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 373.40 Td (Paymaster Self-Pay Gas Fallback Modal \(K-04\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 268.65 373.40 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 358.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 358.20 Td (When the ERC-4337 Paymaster declines sponsorship \(quota K-02 exhausted, non-sponsored tier, or low Paymaster) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 346.00 Td (deposit K-03\), the client intercepts the error code, estimates Base L2 gas \(~0.000005 ETH / ~$0.01\), and) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 333.80 Td (presents a 1-tap "Pay Gas Directly via MetaMask / Smart Wallet" confirmation sheet.) Tj ET
+0.090 0.130 0.220 rg 42.00 295.60 528.00 24.00 re f
+0.831 0.686 0.216 rg 42.00 295.60 4.00 24.00 re f
+BT /F2 11.50 Tf 1.000 1.000 1.000 rg 54.00 302.60 Td (3. Part II: Deep Dive into the 6 Additional Architecture Layers \(Phases B1-B6\)) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 276.60 Td (Beyond the mobile UI \(app/\) and BFF routes \(server/routes/\), the complete Arthentic specification defines 6) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 264.40 Td (specialized infrastructure layers.) Tj ET
+0.970 0.980 1.000 rg 42.00 100.20 528.00 158.00 re f
+0.70 w 0.780 0.830 0.900 RG 42.00 100.20 528.00 158.00 re S
+BT /F2 8.00 Tf 0.100 0.180 0.350 rg 52.00 246.20 Td (ARCHITECTURE DIAGRAM 3: THE 6 PROTOCOL & INFRASTRUCTURE LAYERS \(PHASES B1-B6\)) Tj ET
+0.930 0.960 1.000 rg 52.00 217.70 508.00 20.50 re f
+0.70 w 0.250 0.480 0.820 RG 52.00 217.70 508.00 20.50 re S
+BT /F2 7.50 Tf 0.080 0.120 0.200 rg 58.00 229.70 Td (LAYER 6: Institutional Web Consoles \(Phase B6\)) Tj ET
+BT /F1 7.00 Tf 0.200 0.240 0.300 rg 58.00 221.20 Td (Gallery Safe Portal \(B-08, F-05\)  |  Conservator Studio \(E-03, E-04\)  |  Admin Incident Console \(J-05, J-01\)  |  Public CoA \(B-12\)) Tj ET
+0.950 0.940 0.990 rg 52.00 195.00 508.00 20.50 re f
+0.70 w 0.450 0.350 0.780 RG 52.00 195.00 508.00 20.50 re S
+BT /F2 7.50 Tf 0.080 0.120 0.200 rg 58.00 207.00 Td (LAYER 5: ERC-4337 Paymaster & Gas Relayer \(Phase B5\)) Tj ET
+BT /F1 7.00 Tf 0.200 0.240 0.300 rg 58.00 198.50 Td (Selector Allow-List \(K-01: T1/T2/T3\)  |  Per-Wallet Quotas \(K-02\)  |  EntryPoint Deposit Monitor \(K-03\)  |  Cost Ledger \(K-05\)) Tj ET
+0.920 0.980 0.950 rg 52.00 172.30 508.00 20.50 re f
+0.70 w 0.200 0.620 0.420 RG 52.00 172.30 508.00 20.50 re S
+BT /F2 7.50 Tf 0.080 0.120 0.200 rg 58.00 184.30 Td (LAYER 3: Protocol Node & HSM/KMS Security \(Phase B3\)) Tj ET
+BT /F1 7.00 Tf 0.200 0.240 0.300 rg 58.00 175.80 Td (AES-128 SUN Validator \(D-02\)  |  384-D LiDAR ML \(>=8800 bps\)  |  HSM EIP-712 Signer \(I-01\)  |  Arweave/IPFS + S3 Storage) Tj ET
+0.990 0.960 0.900 rg 52.00 149.60 508.00 20.50 re f
+0.70 w 0.820 0.560 0.160 RG 52.00 149.60 508.00 20.50 re S
+BT /F2 7.50 Tf 0.080 0.120 0.200 rg 58.00 161.60 Td (LAYER 4: Reorg-Safe Chain Indexer & L1 Batcher \(Phase B4\)) Tj ET
+BT /F1 7.00 Tf 0.200 0.240 0.300 rg 58.00 153.10 Td (Base L2 Log Subscriber & Reorg Rollback \(SD-12\)  |  ownerOf Drift Reconciler  |  Eth L1 Merkle Batcher \(H-05: 1000 events/24h\)) Tj ET
+0.960 0.960 0.960 rg 52.00 126.90 508.00 20.50 re f
+0.70 w 0.450 0.480 0.540 RG 52.00 126.90 508.00 20.50 re S
+BT /F2 7.50 Tf 0.080 0.120 0.200 rg 58.00 138.90 Td (LAYER 2: Production Data & Hot-Path Cache \(Phase B2\)) Tj ET
+BT /F1 7.00 Tf 0.200 0.240 0.300 rg 58.00 130.40 Td (PostgreSQL 16 \(40 Tables / 6 ERDs / Immutability Triggers\)  +  Redis 7 Hot Path \(6 Keys: sun:ctr, nonce, quota, rl, pm, idx\)) Tj ET
+0.990 0.930 0.930 rg 52.00 104.20 508.00 20.50 re f
+0.70 w 0.780 0.260 0.260 RG 52.00 104.20 508.00 20.50 re S
+BT /F2 7.50 Tf 0.080 0.120 0.200 rg 58.00 116.20 Td (LAYER 1: Smart Contract Layer \(Phase B1\)) Tj ET
+BT /F1 7.00 Tf 0.200 0.240 0.300 rg 58.00 107.70 Td (Base L2: Roles.sol + AttestationVerifier.sol + ArthenticNFT.sol + ArthenticEscrow.sol   |   Ethereum L1: MerkleAnchor.sol) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 73.20 Td (3.1 Layer 1: Smart Contract Layer \(contracts/ -- Phase B1\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 69.20 m 570.00 69.20 l S
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 6 of 13) Tj ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 17 0 R >>
+endobj
+19 0 obj
+<< /Length 9541 >>
+stream
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 731.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 731.00 Td (Runtime:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 92.16 731.00 Td ( Base L2 \(Chain ID 8453 Mainnet / 84532 Base Sepolia\) for low-latency, sub-cent transactions) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 718.80 Td (\(ArthenticNFT, ArthenticEscrow\) + Ethereum L1 \(Chain ID 1 Mainnet / 11155111 Sepolia\) for ultimate finality) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 706.60 Td (\(MerkleAnchor\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 691.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 691.40 Td (Upgradeability & Security:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 178.02 691.40 Td ( ArthenticNFT uses OpenZeppelin UUPSUpgradeable controlled by the Protocol Admin) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 679.20 Td (Timelock + Gnosis Safe \(DEFAULT_ADMIN_ROLE\), while genesisHash[tokenId] is protected by a write-once check \(if) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 667.00 Td (\(genesisHash[tokenId] != bytes32\(0\)\) revert GENESIS_IMMUTABLE\(\)\).) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 643.80 Td (3.2 Layer 2: Production Data & Hot-Path Cache Layer \(PostgreSQL 16 + Redis 7 -- Phase B2\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 639.80 m 570.00 639.80 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 622.80 Td (The specification \(Arthentic_Sequence_and_Database_Design.pdf, Part 2\) defines 40 PostgreSQL 16 tables across 6) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 610.60 Td (domains and 6 Redis hot-path keys:) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 590.40 Td (The 6 PostgreSQL 16 Domains \(40 Tables\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 575.40 Td (1.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 575.40 Td (Domain 1 -- Identity & Access \(7 tables\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 244.80 575.40 Td () Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 560.20 Td (users, wallets \(wallet_type IN \('smart_wallet', 'safe', 'eoa'\)\), institutions, roles, role_grants,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 548.00 Td (artist_applications, notifications.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 532.80 Td (2.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 532.80 Td (Domain 2 -- Artwork, Genesis & Chips \(10 tables\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 282.96 532.80 Td () Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 517.60 Td (stored_files, artworks \(protected by forbid_genesis_change\(\) trigger\), intake_dossiers, artwork_files,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 505.40 Td (scan_sessions, scan_points, feature_vectors, nfc_chips \(with one_active_chip partial unique index and KMS-encrypted) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 493.20 Td (uid_enc\), chip_replacements, chip_approvals \(UNIQUE \(replacement_id, party\)\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 478.00 Td (3.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 478.00 Td (Domain 3 -- Marketplace & Escrow \(3 tables\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 259.11 478.00 Td () Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 462.80 Td (listings \(protected by state-transition trigger enforcing Listed -> Funded -> Completed | Refunded | Cancelled\),) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 450.60 Td (payments, shipments.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 435.40 Td (4.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 435.40 Td (Domain 4 -- Verification, Attestation & Provenance \(8 tables\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 420.20 Td (verification_requests \(monthly range-partitioned\), sun_validations, attestations \(CHECK \(purpose <> 'l2' OR) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 408.00 Td (similarity_bps >= 8800\)\), verification_records, chain_events \(partitioned\), provenance_events, merkle_batches,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 395.80 Td (indexer_cursors.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 380.60 Td (5.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 380.60 Td (Domain 5 -- Restoration \(4 tables\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 216.18 380.60 Td () Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 365.40 Td (restoration_requests, restoration_reports, owner_consents, condition_updates.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 350.20 Td (6.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 350.20 Td (Domain 6 -- Governance, Paymaster & Audit \(8 tables\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 335.00 Td (signer_keys, incidents, incident_actions, audit_log \(REVOKE UPDATE, DELETE append-only\), paymaster_policies,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 322.80 Td (user_quotas, sponsored_txs, paymaster_balance_snapshots.) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 302.60 Td (The 6 Redis 7 Hot-Path Keys) Tj ET
+0.100 0.150 0.250 rg 42.00 268.00 528.00 28.60 re f
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 47.00 284.90 Td (Redis Key Pattern) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 142.04 284.90 Td (Data Type & TTL) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 279.32 284.90 Td (Atomic Operation &) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 279.32 275.10 Td (Security Purpose) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 363.80 284.90 Td () Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 469.40 284.90 Td () Tj ET
+1.000 1.000 1.000 rg 42.00 190.40 528.00 77.60 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 190.40 95.04 77.60 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 256.30 Td (1. sun:ctr:{chipId}) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 190.40 137.28 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 256.30 Td (STRING \(int, no expiry\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 190.40 84.48 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 256.30 Td (Monotonic Lua) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 246.50 Td (check-and-set) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 236.70 Td (\(new_ctr > old_ctr\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 226.90 Td (rejecting replayed) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 217.10 Td (NFC SUN URLs in < 1) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 207.30 Td (ms before hitting) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 197.50 Td (PostgreSQL \(D-02\).) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 190.40 105.60 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 256.30 Td () Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 190.40 105.60 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 256.30 Td () Tj ET
+0.965 0.975 0.990 rg 42.00 112.80 528.00 77.60 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 112.80 95.04 77.60 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 178.70 Td (2. nonce:{nonce}) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 112.80 137.28 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 178.70 Td (STRING \(TTL = deadline - now +) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 168.90 Td (60s\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 112.80 84.48 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 178.70 Td (SET nonce:{n} 1 NX) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 168.90 Td (EX <ttl> at EIP-712) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 159.10 Td (signing time \(I-01\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 149.30 Td (so two concurrent) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 139.50 Td (requests never) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 129.70 Td (receive the same) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 119.90 Td (attestation nonce.) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 112.80 105.60 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 178.70 Td () Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 112.80 105.60 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 178.70 Td () Tj ET
+1.000 1.000 1.000 rg 42.00 54.80 528.00 58.00 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 54.80 95.04 58.00 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 101.10 Td (3.) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 91.30 Td (quota:{wallet}:{poli-) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 81.50 Td (cyId}:{period}) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 54.80 137.28 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 101.10 Td (STRING \(TTL = period_end\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 54.80 84.48 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 101.10 Td (INCRBY atomic) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 91.30 Td (counter enforcing) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 81.50 Td (per-user Paymaster) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 71.70 Td (gas sponsorship) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 61.90 Td (limits \(K-02\).) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 54.80 105.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 101.10 Td () Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 54.80 105.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 101.10 Td () Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 7 of 13) Tj ET
+endstream
+endobj
+20 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 19 0 R >>
+endobj
+21 0 obj
+<< /Length 9172 >>
+stream
+0.100 0.150 0.250 rg 42.00 711.40 528.00 28.60 re f
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 47.00 728.30 Td (Redis Key Pattern) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 142.04 728.30 Td (Data Type & TTL) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 279.32 728.30 Td (Atomic Operation &) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 279.32 718.50 Td (Security Purpose) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 363.80 728.30 Td () Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 469.40 728.30 Td () Tj ET
+0.965 0.975 0.990 rg 42.00 643.60 528.00 67.80 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 643.60 95.04 67.80 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 699.70 Td (4. rl:verify:{ipHash}) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 643.60 137.28 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 699.70 Td (ZSET / STRING \(TTL = 60s\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 643.60 84.48 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 699.70 Td (Sliding-window rate) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 689.90 Td (limiter protecting) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 680.10 Td (public wallet-less) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 670.30 Td (verification) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 660.50 Td (\(D-14*\) from) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 650.70 Td (scraping or DoS.) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 643.60 105.60 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 699.70 Td () Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 643.60 105.60 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 699.70 Td () Tj ET
+1.000 1.000 1.000 rg 42.00 595.40 528.00 48.20 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 595.40 95.04 48.20 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 631.90 Td (5. pm:balance) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 595.40 137.28 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 631.90 Td (HASH \(TTL = 30s\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 595.40 84.48 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 631.90 Td (Cached EntryPoint) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 622.10 Td (deposit status) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 612.30 Td (\(status: ok) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 595.40 105.60 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 631.90 Td (warning) Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 595.40 105.60 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 631.90 Td (empty, balance_wei\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 622.10 Td (consulted before signing) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 612.30 Td (any paymasterAndData) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 602.50 Td (\(K-03\).) Tj ET
+0.965 0.975 0.990 rg 42.00 537.40 528.00 58.00 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 537.40 95.04 58.00 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 583.70 Td (6. idx:head:{chainId}) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 537.40 137.28 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 583.70 Td (STRING \(no expiry\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 537.40 84.48 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 583.70 Td (Latest indexed) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 573.90 Td (block number and) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 564.10 Td (timestamp for) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 554.30 Td (health checks and) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 544.50 Td (lag alerts \(SD-12\).) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 537.40 105.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 583.70 Td () Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 537.40 105.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 583.70 Td () Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 510.40 Td (3.3 Layer 3: Protocol Node & HSM/KMS Security Layer \(server/node/ -- Phase B3\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 506.40 m 570.00 506.40 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 489.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 489.40 Td (Zero Plaintext Keys in DB or RAM \(SC-NODE-01, SC-NODE-02\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 474.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 474.20 Td (nfc_chips.key_ref stores only an opaque KMS/HSM key handle \(arn:aws:kms:... or Vault Transit path\). AES-128) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 462.00 Td (CMAC verification happens inside the KMS/HSM boundary.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 446.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 446.80 Td (signer_keys.hsm_key_ref references the secp256k1 key holding PROTOCOL_NODE_ROLE. When the Protocol Node signs) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 434.60 Td (an EIP-712 Attestation, it sends only the 32-byte digest to HSM/KMS and receives \(r, s, v\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 419.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 419.40 Td (Permanent Decentralized Storage Adapter \(server/node/storage.py\):) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 404.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 404.20 Td (Uploads canonical JSON metadata, 384-D feature vectors, CoA documents, and conservation reports to Arweave /) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 392.00 Td (IPFS \(B-04, E-04\), returning ar://... or ipfs://... URIs and verifying keccak256 content hashes before) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 379.80 Td (on-chain calls.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 356.60 Td (3.4 Layer 4: Reorg-Safe Chain Event Indexer & L1 Merkle Batcher \(server/indexer/ -- Phase B4\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 352.60 m 570.00 352.60 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 335.60 Td (1.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 335.60 Td (Reorg-Safe Event Indexing \(SD-12\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 216.18 335.60 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 320.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 320.40 Td (Polls or subscribes via WebSocket to ArthenticNFT and ArthenticEscrow on Base L2.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 305.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 305.20 Td (Inserts raw logs into chain_events with UNIQUE \(chain_id, tx_hash, log_index\) and finalized = false.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 290.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 290.00 Td (Checks parent block_hash continuity against indexer_cursors.last_block_hash. If an L2 reorg occurs, deletes) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 277.80 Td (unfinalized rows \(block_number >= fork_block AND finalized = false\), rewinds indexer_cursors, and replays the) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 265.60 Td (canonical chain.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 250.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 250.40 Td (Marks rows finalized = true once current_block - event_block >= confirmation_depth \(e.g., 12 blocks on Base) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 238.20 Td (L2\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 223.00 Td (2.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 223.00 Td (L1 Merkle Batch Worker \(SD-10, H-05\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 230.49 223.00 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 207.80 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 207.80 Td (Every 24 hours or whenever COUNT\(*\) >= 1000 finalized provenance_events have merkle_batch_id IS NULL:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 192.60 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 192.60 Td (Computes a sorted Merkle tree over each event's leaf_hash = keccak256\(abi.encode\(chainId, contract, txHash,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 180.40 Td (logIndex, tokenId, eventType, blockNumber\)\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 55.50 165.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 165.20 Td (Checks Ethereum L1 base fee; if L1 gas is below the configured ceiling, submits MerkleAnchor.anchorRoot\(root,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 67.50 153.00 Td (fromBlock, toBlock\) on Ethereum L1 and records l1_tx_hash in merkle_batches.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 129.80 Td (3.5 Layer 5: ERC-4337 Paymaster & Hybrid Meta-Transaction Relayer \(server/paymaster/ -- Phase B5\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 125.80 m 570.00 125.80 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 108.80 Td (Implements the gas sponsorship policy defined in SD-09 and ADR-01:) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 8 of 13) Tj ET
+endstream
+endobj
+22 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 21 0 R >>
+endobj
+23 0 obj
+<< /Length 11554 >>
+stream
+0.100 0.150 0.250 rg 42.00 711.40 528.00 28.60 re f
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 47.00 728.30 Td (Sponsorship Tier) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 142.04 728.30 Td (Allowed Target & Function) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 142.04 718.50 Td (Selectors \(K-01\)) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 279.32 728.30 Td (Eligible Roles) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 363.80 728.30 Td (Default Quota \(K-02\)) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 469.40 728.30 Td (Fallback Behavior \(K-04\)) Tj ET
+1.000 1.000 1.000 rg 42.00 673.00 528.00 38.40 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 673.00 95.04 38.40 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 699.70 Td (Tier T1 \(High) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 689.90 Td (Priority Escrow) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 680.10 Td (Settlement\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 673.00 137.28 38.40 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 699.70 Td (ArthenticEscrow.claim\(\) \(C-06\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 689.90 Td (ArthenticEscrow.cancelListing\(\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 680.10 Td (\(C-03*\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 673.00 84.48 38.40 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 699.70 Td (Buyer / Collector,) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 689.90 Td (Artist) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 673.00 105.60 38.40 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 699.70 Td (10 sponsored txs / month) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 689.90 Td (/ wallet \(max_gas_wei =) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 680.10 Td (350,000\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 673.00 105.60 38.40 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 699.70 Td (Prompts Self-Pay Base L2) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 689.90 Td (modal \(~$0.01\)) Tj ET
+0.965 0.975 0.990 rg 42.00 605.20 528.00 67.80 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 605.20 95.04 67.80 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 661.30 Td (Tier T2 \(Lifecycle &) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 651.50 Td (Curation\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 605.20 137.28 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 661.30 Td (ArthenticEscrow.createListing\(\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 651.50 Td (\(C-01, C-10\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 641.70 Td (ArthenticNFT.updateCondition\(\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 631.90 Td (\(E-03\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 622.10 Td (ArthenticNFT.genesisMint\(\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 612.30 Td (\(B-08\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 605.20 84.48 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 661.30 Td (Accredited) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 651.50 Td (ARTIST_ROLE,) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 641.70 Td (CONSERVATOR_ROLE,) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 631.90 Td (VERIFIER_ROLE) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 605.20 105.60 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 661.30 Td (25 sponsored txs / month) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 651.50 Td (/ wallet) Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 605.20 105.60 67.80 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 661.30 Td (Prompts Self-Pay Base L2) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 651.50 Td (modal or Gallery Safe) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 641.70 Td (gas) Tj ET
+1.000 1.000 1.000 rg 42.00 557.00 528.00 48.20 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 557.00 95.04 48.20 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 593.50 Td (Tier T3 \(Public) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 583.70 Td (Verification) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 573.90 Td (Anchoring\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 137.04 557.00 137.28 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 593.50 Td (ArthenticNFT.recordVerification\(\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 142.04 583.70 Td (\(D-04\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 274.32 557.00 84.48 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 593.50 Td (Any authenticated) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 279.32 583.70 Td (wallet) Tj ET
+0.45 w 0.820 0.850 0.900 RG 358.80 557.00 105.60 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 593.50 Td (5 sponsored txs / month) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 583.70 Td (/ wallet \(Off-chain) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 573.90 Td (D-14* is unlimited &) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 363.80 564.10 Td (free\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 464.40 557.00 105.60 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 593.50 Td (Continues with free) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 583.70 Td (off-chain verification) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 469.40 573.90 Td (or Self-Pay on-chain) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 530.00 Td (3.6 Layer 6: Institutional Web Consoles \(web/ / Flutter Web -- Phase B6\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 526.00 m 570.00 526.00 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 509.00 Td (Provides desktop browser interfaces for multi-signature institutional workflows, bulk operations, and protocol) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 496.80 Td (security governance \(detailed in Part III below\).) Tj ET
+0.090 0.130 0.220 rg 42.00 458.60 528.00 24.00 re f
+0.831 0.686 0.216 rg 42.00 458.60 4.00 24.00 re f
+BT /F2 11.50 Tf 1.000 1.000 1.000 rg 54.00 465.60 Td (4. Part III: The Web Client -- Portals, Workflows & Role Matrix) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 431.60 Td (4.1 Why the Web Client is Essential to Arthentic) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 427.60 m 570.00 427.60 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 410.60 Td (While the iOS Mobile App is mandatory for physical field interactions requiring iPhone Pro LiDAR \(ARKit\) and) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 398.40 Td (CoreNFC \(NTAG 424 DNA\), institutional actors operate on desktop workstations for governance, multi-signature) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 386.20 Td (execution, high-resolution documentation, and incident monitoring.) Tj ET
+0.970 0.980 1.000 rg 42.00 270.00 528.00 110.00 re f
+0.70 w 0.780 0.830 0.900 RG 42.00 270.00 528.00 110.00 re S
+BT /F2 8.00 Tf 0.100 0.180 0.350 rg 52.00 368.00 Td (ARCHITECTURE DIAGRAM 4: UNIFIED FLUTTER CLIENT -- iOS MOBILE VS. DESKTOP WEB CONSOLES) Tj ET
+0.920 0.980 0.940 rg 52.00 280.00 162.00 80.00 re f
+0.90 w 0.200 0.650 0.380 RG 52.00 280.00 162.00 80.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 59.00 348.00 Td (iOS MOBILE ONLY \(!kIsWeb\)) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 337.00 Td (* ARKit 5-10 Pt LiDAR Scanner) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 327.00 Td (* CoreNFC NTAG 424 DNA Reader) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 317.00 Td (* CoreNFC B-05 Key Provisioner) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 307.00 Td (* Face ID Biometric App Lock) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 297.00 Td (* Mobile WalletConnect Deep Link) Tj ET
+0.930 0.960 1.000 rg 222.00 280.00 162.00 80.00 re f
+0.90 w 0.220 0.450 0.800 RG 222.00 280.00 162.00 80.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 229.00 348.00 Td (SHARED ACROSS iOS & WEB) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 229.00 337.00 Td (* UC-C Escrow Marketplace & Split) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 229.00 327.00 Td (* C-12 Sync Check & DEX Swap) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 229.00 317.00 Td (* B-12 Certificate of Authenticity) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 229.00 307.00 Td (* H-03 Provenance + L1 Badges) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 229.00 297.00 Td (* L-07 Artist & L-09 Collector Dash) Tj ET
+0.990 0.960 0.900 rg 392.00 280.00 162.00 80.00 re f
+0.90 w 0.800 0.550 0.150 RG 392.00 280.00 162.00 80.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 399.00 348.00 Td (WEB CONSOLES \(kIsWeb / Desktop\)) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 399.00 337.00 Td (* Portal 1: Gallery Safe Multisig) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 399.00 327.00 Td (* Portal 2: Conservator Studio) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 399.00 317.00 Td (* Portal 3: Admin Incident \(J-05\)) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 399.00 307.00 Td (* Portal 4: Zero-Install NFC URL) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 399.00 297.00 Td (* Browser MetaMask + Safe SDK) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 243.00 Td (4.2 Portal 1: Gallery & Verifier Institutional Console \(VERIFIER_ROLE + Gnosis Safe\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 239.00 m 570.00 239.00 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 222.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 222.00 Td (Target Actor:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 116.01 222.00 Td ( Galleries, Auction Houses, and Museums holding VERIFIER_ROLE inside a 2-of-3 or 3-of-5 Gnosis Safe) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 209.80 Td (Multisig.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 194.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 194.60 Td (Key Desktop Screens:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 149.40 194.60 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 179.40 Td (1.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 179.40 Td (Intake Dossier Queue \(B-01-B-08\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 220.41 179.40 Td ( View scans captured by gallery staff on iPhones in the field, attach) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 167.20 Td (high-resolution studio photography and provenance PDFs \(B-04\), monitor whether the Artist has completed their) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 155.00 Td (EIP-712 co-signature \(B-07\), and propose/sign ArthenticNFT.genesisMint\(\) via Safe{Wallet} + MetaMask Browser) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 142.80 Td (Extension \(B-08\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 127.60 Td (2.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 127.60 Td (3-of-3 Chip Replacement Coordinator \(F-05\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 268.11 127.60 Td ( Track Collector \(1/3\) and Artist \(2/3\) signatures, attach the) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 115.40 Td (Verifier's 3/3 signature, and execute replaceChip\(\) via the Gallery Safe.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 100.20 Td (3.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 100.20 Td (Bulk Collection Verifier \(/v1/gallery/batch-verify\): Audit an entire exhibition or auction catalog's on-chain) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 88.00 Td (status \(Clear, Flagged, Unsynchronized Ownership, L1 Anchored\) and export signed institutional PDF audit) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 75.80 Td (reports.) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 9 of 13) Tj ET
+endstream
+endobj
+24 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 23 0 R >>
+endobj
+25 0 obj
+<< /Length 9318 >>
+stream
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 723.00 Td (4.3 Portal 2: Conservator Studio Console \(CONSERVATOR_ROLE\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 719.00 m 570.00 719.00 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 702.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 702.00 Td (Target Actor:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 116.01 702.00 Td ( Accredited art restorers and conservation laboratories.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 686.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 686.80 Td (Key Desktop Screens:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 149.40 686.80 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 671.60 Td (1.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 671.60 Td (Restoration Job Inbox \(E-01\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 201.33 671.60 Td ( Accept incoming restoration requests from Collectors and inspect historical) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 659.40 Td (genesisHash and prior ConditionUpdated records \(E-06\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 644.20 Td (2.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 644.20 Td (Treatment Dossier Builder \(E-04\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 220.41 644.20 Td ( Upload high-resolution before/after microscopy, UV fluorescence photos, and) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 632.00 Td (conservation treatment PDFs to Arweave/IPFS \(noteURI\), paired with the post-restoration 8-point LiDAR vector) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 619.80 Td (\(newVectorHash\) captured via the Conservator's iPhone.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 604.60 Td (3.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 604.60 Td (Owner Consent & Condition Update Execution \(E-07*, E-03\): Request EIP-712 OwnerConsent from the Collector and,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 592.40 Td (once signed, execute ArthenticNFT.updateCondition\(\) via browser MetaMask.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 569.20 Td (4.4 Portal 3: Protocol Admin Governance & Incident Console \(DEFAULT_ADMIN_ROLE\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 565.20 m 570.00 565.20 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 548.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 548.20 Td (Target Actor:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 116.01 548.20 Td ( Arthentic Protocol Governance Council \(Safe Multisig + Timelock\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 533.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 533.00 Td (Key Desktop Screens:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 149.40 533.00 Td () Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 517.80 Td (1.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 517.80 Td (Accreditation & Role Governance Queue \(A-06, A-07, A-10\): Review artist_applications portfolios, gallery KYB) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 505.60 Td (credentials, and conservator certifications; propose batch grantRole\(\) or revokeRole\(\) Safe transactions.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 490.40 Td (2.) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 490.40 Td (Real-Time Security Incident Dashboard \(J-05, SD-11\): Live stream of security alerts \(SUN counter replay) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 478.20 Td (bursts, repeated failed claim\(\) attempts, indexer reorgs, or Node signer anomalies\) with 1-Click Safe) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 466.00 Td (Emergency Actions:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 450.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 450.80 Td (Emergency Pause \(J-01\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 186.21 450.80 Td ( Proposes pause\(\) on ArthenticNFT and ArthenticEscrow.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 64.50 435.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 76.50 435.60 Td (Node Signer Key Rotation \(A-09, A-10\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 257.76 435.60 Td ( Proposes atomic revokeRole\(PROTOCOL_NODE_ROLE, compromisedKey\) +) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 76.50 423.40 Td (grantRole\(PROTOCOL_NODE_ROLE, newHsmKey\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 408.20 Td (3.) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 408.20 Td (Paymaster Treasury & Quota Console \(K-01-K-05\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 287.19 408.20 Td ( Live EntryPoint deposit gauge \(K-03\), sponsored_txs burn-rate) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 396.00 Td (charts \(K-05\), and policy editor for Tiers T1-T3.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 372.80 Td (4.5 Portal 4: Zero-Install Public NFC Tap & CoA Web Viewer \(D-14*, B-12\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 368.80 m 570.00 368.80 l S
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 351.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 351.80 Td (Target Actor:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 116.01 351.80 Td ( Museum visitors, art fair attendees, or prospective buyers who tap an NTAG 424 DNA chip with their) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 339.60 Td (smartphone without having the Arthentic app installed.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 324.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 324.40 Td (How It Works:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 116.01 324.40 Td ( Tapping the painting's NFC chip launches https://verify.arthentic.io/?uid=...&ctr=...&cmac=...) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 312.20 Td (directly in mobile Safari/Chrome. The Flutter Web / lightweight web route validates the SUN token via POST) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 300.00 Td (/v1/verify \(D-14*\), displays the L1 Hardware Authenticity Result \(D-09\), renders the Certificate of Authenticity) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 287.80 Td (\(B-12\) and Provenance Timeline \(H-03\), and offers a deep-link button \("Open in Arthentic iOS App for L2 3D LiDAR) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 275.60 Td (Surface Scan"\).) Tj ET
+0.090 0.130 0.220 rg 42.00 237.40 528.00 24.00 re f
+0.831 0.686 0.216 rg 42.00 237.40 4.00 24.00 re f
+BT /F2 11.50 Tf 1.000 1.000 1.000 rg 54.00 244.40 Td (5. Part IV: Implementing Everything in One Unified Codebase \(Monorepo Blueprint\)) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 210.40 Td (5.1 Architectural Strategy: 3 Pillars in 1 Repository) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 206.40 m 570.00 206.40 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 189.40 Td (Yes -- all client applications \(Mobile + Web\), all backend/protocol services \(BFF + Protocol Node + Indexer +) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 177.20 Td (Paymaster\), and all smart contracts \(Base L2 + Ethereum L1\) can and should live in this single repository) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 165.00 Td (\(Arthenthic-Mobile\):) Tj ET
+0.100 0.150 0.250 rg 42.00 130.20 528.00 28.60 re f
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 47.00 147.10 Td (Pillar) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 168.44 147.10 Td (Directory) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 147.10 Td (Technology) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 137.30 Td (Stack) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 337.40 147.10 Td (Unification Mechanism) Tj ET
+1.000 1.000 1.000 rg 42.00 52.60 528.00 77.60 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 52.60 121.44 77.60 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 118.50 Td (1. Unified Client \(Mobile +) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 108.70 Td (Web\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 52.60 116.16 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 118.50 Td (app/) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 52.60 52.80 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 118.50 Td (Flutter 3.x) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 108.70 Td (\(Dart\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 98.90 Td (targeting) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 89.10 Td (iOS) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 79.30 Td (\(!kIsWeb\)) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 69.50 Td (and Web) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 59.70 Td (\(kIsWeb\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 52.60 237.60 77.60 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 118.50 Td (Single Dart codebase sharing 100% of models, API clients,) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 108.70 Td (theme, auth, marketplace, CoA, and role flows. Conditional) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 98.90 Td (platform adapters isolate ARKit/CoreNFC on iOS and) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 89.10 Td (window.ethereum/Safe SDK on Web.) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 10 of 13) Tj ET
+endstream
+endobj
+26 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 25 0 R >>
+endobj
+27 0 obj
+<< /Length 8848 >>
+stream
+0.100 0.150 0.250 rg 42.00 711.40 528.00 28.60 re f
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 47.00 728.30 Td (Pillar) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 168.44 728.30 Td (Directory) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 728.30 Td (Technology) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 284.60 718.50 Td (Stack) Tj ET
+BT /F2 7.60 Tf 1.000 1.000 1.000 rg 337.40 728.30 Td (Unification Mechanism) Tj ET
+0.965 0.975 0.990 rg 42.00 653.40 528.00 58.00 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 653.40 121.44 58.00 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 699.70 Td (2. Unified Backend \(Modular) Tj ET
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 689.90 Td (Monolith\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 653.40 116.16 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 699.70 Td (server/) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 653.40 52.80 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 699.70 Td (Python) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 689.90 Td (3.11+ /) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 680.10 Td (FastAPI /) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 670.30 Td (SQLAlchemy) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 660.50 Td (2.0 / Redis) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 653.40 237.60 58.00 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 699.70 Td (Single Python package containing routes/ \(BFF\), node/ \(SUN) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 689.90 Td (+ ML + KMS signer\), paymaster/ \(K-01-K-05\), and indexer/) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 680.10 Td (\(SD-12 + H-05 background workers\) sharing one db/models.py) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 670.30 Td (schema.) Tj ET
+1.000 1.000 1.000 rg 42.00 605.20 528.00 48.20 re f
+0.45 w 0.820 0.850 0.900 RG 42.00 605.20 121.44 48.20 re S
+BT /F2 7.60 Tf 0.120 0.150 0.200 rg 47.00 641.70 Td (3. Smart Contract Workspace) Tj ET
+0.45 w 0.820 0.850 0.900 RG 163.44 605.20 116.16 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 168.44 641.70 Td (contracts/) Tj ET
+0.45 w 0.820 0.850 0.900 RG 279.60 605.20 52.80 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 641.70 Td (Solidity) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 631.90 Td (^0.8.24 /) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 622.10 Td (Foundry) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 284.60 612.30 Td (\(forge\)) Tj ET
+0.45 w 0.820 0.850 0.900 RG 332.40 605.20 237.60 48.20 re S
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 641.70 Td (Lives alongside app/ and server/; exports compiled JSON) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 631.90 Td (ABIs directly into server/contracts/abi/ and) Tj ET
+BT /F1 7.60 Tf 0.120 0.150 0.200 rg 337.40 622.10 Td (app/lib/contracts/abi/.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 578.20 Td (5.2 Pillar 1: Unified Client \(app/ -- Flutter iOS + Flutter Web\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 574.20 m 570.00 574.20 l S
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 552.20 Td (1. Platform Capability Abstraction \(app/lib/core/platform_capabilities.dart\)) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 537.20 Td (By isolating hardware-dependent APIs behind a clean capability service, the rest of the Flutter app compiles) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 525.00 Td (seamlessly for both iOS and Web:) Tj ET
+0.070 0.100 0.160 rg 42.00 340.80 528.00 178.00 re f
+0.130 0.180 0.270 rg 42.00 503.80 528.00 15.00 re f
+BT /F2 7.20 Tf 0.831 0.686 0.216 rg 52.00 508.30 Td (CODE / STRUCTURE \(DART\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 493.80 Td (import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 483.60 Td () Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 473.40 Td (class PlatformCapabilities {) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 463.20 Td (  static bool get isWeb => kIsWeb;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 453.00 Td (  static bool get isIOS => !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 442.80 Td () Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 432.60 Td (  /// True only on physical iOS devices with ARKit / Pro LiDAR support \(ADR-06\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 422.40 Td (  static bool get supportsLidarScan => isIOS;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 412.20 Td () Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 402.00 Td (  /// True on iOS devices with CoreNFC NTAG 424 DNA reader/writer support) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 391.80 Td (  static bool get supportsHardwareNfc => isIOS;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 381.60 Td () Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 371.40 Td (  /// True on Desktop/Web layouts \(>= 900px width\) for Gallery Safe & Admin Consoles) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 361.20 Td (  static bool isDesktopConsole\(double screenWidth\) => kIsWeb || screenWidth >= 900;) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 351.00 Td (}) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 318.80 Td (2. Adaptive Navigation Shell \(app/lib/main.dart\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 303.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 303.80 Td (Compact Mobile View \(width < 900px on iOS\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 259.11 303.80 Td ( Renders the existing luxury dark-gallery bottom navigation bar) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 291.60 Td (\(Home, Scan, Market, Provenance, Wallet, Settings\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 276.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 276.40 Td (Expanded Web Console View \(width >= 900px on Flutter Web\): Renders a persistent left NavigationRail / sidebar) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 264.20 Td (that includes all shared tabs plus role-gated institutional console tabs:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 249.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 249.00 Td (Gallery Safe Console \(VERIFIER_ROLE\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 239.49 249.00 Td ( Intake Dossier Manager, Safe Mint Queue \(B-08\), 3-of-3 Chip Replacement) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 236.80 Td (Coordinator \(F-05\), Batch Verifier.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 221.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 221.60 Td (Conservator Studio \(CONSERVATOR_ROLE\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 244.26 221.60 Td ( Restoration Requests \(E-01\), Arweave Dossier Uploader \(E-04\), Condition) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 209.40 Td (Update Signer \(E-03\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 194.20 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 194.20 Td (Protocol Admin Console \(DEFAULT_ADMIN_ROLE\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 272.88 194.20 Td ( Role Accreditation Queue \(A-06/A-07\), Live Security Incident) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 182.00 Td (Monitor \(J-05\), Emergency Pause \(J-01\), Paymaster Ledger \(K-03/K-05\).) Tj ET
+BT /F2 9.80 Tf 0.160 0.220 0.320 rg 46.00 161.80 Td (3. Unified Web3 Wallet Adapter \(app/lib/services/wallet_adapter.dart\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 146.80 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 146.80 Td (On iOS \(!kIsWeb\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 135.09 146.80 Td ( Uses WalletConnect v2 \(metamask://wc\) deep links and iOS Passkey WebAuthn) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 134.60 Td (\(ASAuthorizationController\).) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 119.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 119.40 Td (On Web \(kIsWeb\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 130.32 119.40 Td ( Uses injected EIP-1193 provider \(window.ethereum for MetaMask Browser Extension\), WebAuthn) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 107.20 Td (browser passkeys, and @safe-global/safe-apps-sdk JS interop when loaded inside the Gnosis Safe web interface.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 84.00 Td (5.3 Pillar 2: Unified Backend \(server/ -- FastAPI Modular Monolith\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 80.00 m 570.00 80.00 l S
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 11 of 13) Tj ET
+endstream
+endobj
+28 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 27 0 R >>
+endobj
+29 0 obj
+<< /Length 10297 >>
+stream
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 731.00 Td (Instead of managing 4 separate repositories and Docker images during development, server/ runs as a Modular) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 718.80 Td (Monolith where each architectural layer is a clean Python sub-package that can run in-process \(via FastAPI lifespan) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 706.60 Td (tasks\) or be scaled out as independent worker processes using the exact same codebase:) Tj ET
+0.970 0.980 1.000 rg 42.00 616.40 528.00 84.00 re f
+0.70 w 0.780 0.830 0.900 RG 42.00 616.40 528.00 84.00 re S
+BT /F2 8.00 Tf 0.100 0.180 0.350 rg 52.00 688.40 Td (ARCHITECTURE DIAGRAM 5: UNIFIED PYTHON FASTAPI MODULAR MONOLITH \(server/\)) Tj ET
+0.940 0.960 0.990 rg 52.00 626.40 96.00 54.00 re f
+0.90 w 0.300 0.450 0.700 RG 52.00 626.40 96.00 54.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 59.00 668.40 Td (server/routes/) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 657.40 Td (BFF REST API) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 647.40 Td (auth, genesis, market) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 59.00 637.40 Td (verify, roles, admin) Tj ET
+0.940 0.960 0.990 rg 155.00 626.40 96.00 54.00 re f
+0.90 w 0.300 0.450 0.700 RG 155.00 626.40 96.00 54.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 162.00 668.40 Td (server/node/) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 162.00 657.40 Td (Protocol Node) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 162.00 647.40 Td (SUN CMAC + LiDAR ML) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 162.00 637.40 Td (HSM Signer + Arweave) Tj ET
+0.940 0.960 0.990 rg 258.00 626.40 96.00 54.00 re f
+0.90 w 0.300 0.450 0.700 RG 258.00 626.40 96.00 54.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 265.00 668.40 Td (server/paymaster/) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 265.00 657.40 Td (ERC-4337 Paymaster) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 265.00 647.40 Td (K-01 Tiers T1-T3) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 265.00 637.40 Td (K-02 Quotas & K-05) Tj ET
+0.940 0.960 0.990 rg 361.00 626.40 96.00 54.00 re f
+0.90 w 0.300 0.450 0.700 RG 361.00 626.40 96.00 54.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 368.00 668.40 Td (server/indexer/) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 368.00 657.40 Td (Chain Indexer) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 368.00 647.40 Td (SD-12 Reorg Rollback) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 368.00 637.40 Td (H-05 L1 Merkle Batch) Tj ET
+0.940 0.960 0.990 rg 464.00 626.40 96.00 54.00 re f
+0.90 w 0.300 0.450 0.700 RG 464.00 626.40 96.00 54.00 re S
+BT /F2 8.00 Tf 0.080 0.150 0.300 rg 471.00 668.40 Td (server/db/) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 471.00 657.40 Td (Shared Persistence) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 471.00 647.40 Td (40 PG16 ORM Models) Tj ET
+BT /F1 7.30 Tf 0.160 0.200 0.260 rg 471.00 637.40 Td (6 Redis Hot Keys) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 597.40 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 597.40 Td (Single Command for Development:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 201.87 597.40 Td ( uvicorn server.main:app --reload starts the BFF API, Protocol Node endpoints,) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 585.20 Td (Paymaster endpoints, and background Chain Indexer / L1 Merkle Batcher loops together.) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 570.00 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 54.00 570.00 Td (Production Process Isolation \(Same Codebase\):) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 268.65 570.00 Td ( In production Kubernetes/ECS, the exact same container image can) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 557.80 Td (be started with:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 542.60 Td (*) Tj ET
+BT /F2 9.00 Tf 0.080 0.110 0.160 rg 63.00 542.60 Td (uvicorn server.main:) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 158.40 542.60 Td (app \(API + BFF\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 527.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 527.40 Td (python -m server.node.worker \(Dedicated HSM-isolated Protocol Node\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 512.20 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 512.20 Td (python -m server.indexer.worker \(Dedicated Reorg-Safe Indexer & L1 Merkle Batcher\)) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 51.00 497.00 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 63.00 497.00 Td (python -m server.paymaster.worker \(Dedicated ERC-4337 Paymaster service\)) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 473.80 Td (5.4 Pillar 3: Smart Contract Workspace \(contracts/ -- Foundry Solidity\)) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 469.80 m 570.00 469.80 l S
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 452.80 Td (Adding contracts/ to the root of Arthenthic-Mobile keeps Solidity contracts, Python backend verifiers, and Dart) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 42.00 440.60 Td (mobile/web clients 100% synchronized on EIP-712 typehashes, struct layouts, and contract ABIs:) Tj ET
+BT /F2 9.00 Tf 0.150 0.320 0.600 rg 42.00 425.40 Td (*) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 425.40 Td (A single script \(scripts/sync_abis.py\) compiles contracts/src/*.sol via forge build and writes the ABI JSONs to) Tj ET
+BT /F1 9.00 Tf 0.150 0.180 0.220 rg 54.00 413.20 Td (server/contracts/abi/ and app/lib/contracts/abi/.) Tj ET
+BT /F2 10.80 Tf 0.090 0.180 0.360 rg 42.00 390.00 Td (5.5 Complete Unified Monorepo Directory Structure) Tj ET
+0.70 w 0.800 0.840 0.900 RG 42.00 386.00 m 570.00 386.00 l S
+0.070 0.100 0.160 rg 42.00 57.20 528.00 320.80 re f
+0.130 0.180 0.270 rg 42.00 363.00 528.00 15.00 re f
+BT /F2 7.20 Tf 0.831 0.686 0.216 rg 52.00 367.50 Td (CODE / STRUCTURE \(TEXT\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 353.00 Td (Arthenthic-Mobile/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 342.80 Td (|+-- app/                                      # PILLAR 1: UNIFIED FLUTTER CLIENT \(iOS + Web\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 332.60 Td (|   |+-- ios/                                  # iOS native runner \(ARKit LiDAR + CoreNFC channels\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 322.40 Td (|   |+-- web/                                  # Flutter Web runner \(MetaMask EIP-1193 + Safe SDK\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 312.20 Td (|   `--- lib/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 302.00 Td (|       |+-- main.dart                         # Adaptive shell \(BottomNav on iOS, Sidebar on Web\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 291.80 Td (|       |+-- core/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 281.60 Td (|       |   |+-- platform_capabilities.dart    # kIsWeb vs iOS Pro LiDAR / CoreNFC guards) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 271.40 Td (|       |   |+-- theme.dart                    # Museum dark-gallery & brass plaque design system) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 261.20 Td (|       |   `--- api_client.dart               # Shared Dio/HTTP client + JWT refresh interceptor) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 251.00 Td (|       |+-- contracts/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 240.80 Td (|       |   `--- abi/                          # Auto-synced ABIs \(ArthenticNFT, ArthenticEscrow\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 230.60 Td (|       |+-- services/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 220.40 Td (|       |   |+-- wallet_service.dart           # Unified MetaMask \(WCv2 / EIP-1193\) + Passkey + Safe) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 210.20 Td (|       |   |+-- nfc_service.dart              # NTAG 424 DNA SUN parser & B-05 key writer) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 200.00 Td (|       |   `--- app_lock_service.dart         # Face ID / passcode guard \(mobile\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 189.80 Td (|       `--- features/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 179.60 Td (|           |+-- auth/                         # Login, Register, OAuth, Biometric Lock) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 169.40 Td (|           |+-- genesis/                      # B-01 Intake, B-07 Artist Co-Sign, B-12 Public CoA) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 159.20 Td (|           |+-- scan/                         # 5-10 Pt Guided LiDAR Scan \(iOS\) / Upload \(Web\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 149.00 Td (|           |+-- result/                       # D-09 Verification Result + D-15* Status Badges) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 138.80 Td (|           |+-- marketplace/                  # UC-C Escrow Market, C-12 Check, ETH/USDC DEX Swap) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 128.60 Td (|           |+-- conservation/                 # E-01 Request, E-07* Owner Consent, F-05 3-of-3 Swap) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 118.40 Td (|           |+-- provenance/                   # H-03 Timeline + H-05 Ethereum L1 Merkle Proof Badge) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 108.20 Td (|           |+-- dashboards/                   # L-07 Artist Royalty & L-09 Collector Dashboards) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 98.00 Td (|           |+-- wallet/                       # Multi-wallet manager & K-04 Self-Pay Gas Modal) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 87.80 Td (|           `--- web_consoles/                 # Desktop/Web-optimized institutional views:) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 77.60 Td (|               |+-- gallery_safe_console.dart # B-08 Safe Mint, F-05 Replace Chip, Batch Verify) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 67.40 Td (|               |+-- conservator_console.dart  # E-04 Arweave Dossier Builder, E-03 Condition Update) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 12 of 13) Tj ET
+endstream
+endobj
+30 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 29 0 R >>
+endobj
+31 0 obj
+<< /Length 6843 >>
+stream
+0.070 0.100 0.160 rg 42.00 266.20 528.00 473.80 re f
+0.130 0.180 0.270 rg 42.00 725.00 528.00 15.00 re f
+BT /F2 7.20 Tf 0.831 0.686 0.216 rg 52.00 729.50 Td (CODE / STRUCTURE \(TEXT\) [CONT.]) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 715.00 Td (|               `--- admin_incident_console.dart # J-05 Incident Stream, J-01 Pause, A-06..10 Roles) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 704.80 Td (|) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 694.60 Td (|+-- server/                                   # PILLAR 2: UNIFIED PYTHON MODULAR MONOLITH) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 684.40 Td (|   |+-- main.py                               # FastAPI entry + lifespan background workers) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 674.20 Td (|   |+-- db/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 664.00 Td (|   |   |+-- models.py                         # 6-Domain SQLAlchemy ORM \(PostgreSQL 16 + SQLite dev\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 653.80 Td (|   |   `--- redis_hotpath.py                  # 6 Redis atomic keys \(sun:ctr, nonce, quota, etc.\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 643.60 Td (|   |+-- crypto/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 633.40 Td (|   |   |+-- sun.py                            # AES-128 CMAC & monotonic counter verifier) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 623.20 Td (|   |   `--- attestation.py                    # EIP-712 typed data hashing & signature recovery) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 613.00 Td (|   |+-- ml/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 602.80 Td (|   |   `--- embedder.py                       # 384-D weave + crack + LiDAR depth similarity engine) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 592.60 Td (|   |+-- node/                                 # Phase B3: Protocol Node Layer) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 582.40 Td (|   |   |+-- hsm_signer.py                     # Cloud KMS / Vault Transit EIP-712 & AES-128 adapter) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 572.20 Td (|   |   `--- arweave_storage.py                # Permanent Arweave/IPFS uploader & hash verifier) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 562.00 Td (|   |+-- indexer/                              # Phase B4: Chain Indexer & L1 Batcher Layer) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 551.80 Td (|   |   |+-- event_listener.py                 # Reorg-safe Base L2 event subscriber \(SD-12\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 541.60 Td (|   |   |+-- merkle_batcher.py                 # Ethereum L1 Merkle root batch worker \(H-05\)) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 531.40 Td (|   |   `--- reconciler.py                     # Periodic on-chain ownerOf/genesisHash drift healer) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 521.20 Td (|   |+-- paymaster/                            # Phase B5: ERC-4337 Paymaster Layer) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 511.00 Td (|   |   |+-- policy_engine.py                  # K-01 allow-list \(T1-T3\) & K-02 per-user quotas) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 500.80 Td (|   |   `--- balance_monitor.py                # K-03 EntryPoint deposit monitor & K-05 cost ledger) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 490.60 Td (|   |+-- routes/                               # BFF REST API Endpoints) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 480.40 Td (|   |   |+-- auth.py                           # Hybrid Auth, OAuth, Sessions & MetaMask SIWE) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 470.20 Td (|   |   |+-- genesis.py                        # B-01 Intake, B-07 Co-Sign, B-08 Mint, B-12 CoA) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 460.00 Td (|   |   |+-- marketplace.py                    # UC-C Listings, Escrow, 93.5/5/1.5 Split & DEX Swap) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 449.80 Td (|   |   |+-- conservation.py                   # UC-E Restoration, E-07* Consent & UC-F 3-of-3 Swap) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 439.60 Td (|   |   |+-- verify.py                         # UC-D L1/L2 Verification & D-15* Status Badges) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 429.40 Td (|   |   |+-- roles.py                          # Role Applications & On-Chain Grant Sync) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 419.20 Td (|   |   `--- admin.py                          # J-05 Incidents, J-01 Emergency Pause & K-05 Metrics) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 409.00 Td (|   `--- tests/                                # Comprehensive Pytest Suite) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 398.80 Td (|) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 388.60 Td (|+-- contracts/                                # PILLAR 3: FOUNDRY SOLIDITY SMART CONTRACTS) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 378.40 Td (|   |+-- foundry.toml                          # Base L2 + Ethereum L1 RPC & compiler config) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 368.20 Td (|   |+-- src/) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 358.00 Td (|   |   |+-- Roles.sol                         # Role constants library) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 347.80 Td (|   |   |+-- AttestationVerifier.sol           # EIP-712 verifier, 8800 bps gate, usedNonce map) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 337.60 Td (|   |   |+-- ArthenticNFT.sol                  # UUPS ERC-721 + ERC-2981 + ADR-02/03 enforcement) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 327.40 Td (|   |   |+-- ArthenticEscrow.sol               # Escrow state machine + ADR-04/05 93.5/5/1.5 split) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 317.20 Td (|   |   `--- MerkleAnchor.sol                  # Ethereum L1 batch Merkle root anchor) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 307.00 Td (|   |+-- test/                                 # Foundry unit, fuzz, and invariant tests) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 296.80 Td (|   `--- script/                               # Deploy scripts for Base Sepolia & Eth Sepolia) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 286.60 Td (|) Tj ET
+BT /F4 7.60 Tf 0.900 0.940 0.980 rg 52.00 276.40 Td (`--- docs/                                     # Master Architecture & Security Specifications) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 756.00 m 570.00 756.00 l S
+BT /F2 7.50 Tf 0.35 0.40 0.50 rg 42.00 762.00 Td (ARTHENTIC PROTOCOL  |  NEXT STEPS, SYSTEM LAYERS & UNIFIED MONOREPO BLUEPRINT) Tj ET
+0.50 w 0.82 0.85 0.90 RG 42.00 36.00 m 570.00 36.00 l S
+BT /F1 7.50 Tf 0.40 0.44 0.52 rg 42.00 24.00 Td (Confidential Engineering & Architecture Specification  --  Base L2 + Ethereum L1 + Flutter iOS/Web + FastAPI) Tj ET
+BT /F2 7.80 Tf 0.15 0.22 0.38 rg 516.00 24.00 Td (Page 13 of 13) Tj ET
+endstream
+endobj
+32 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R /F4 6 0 R >> >> /Contents 31 0 R >>
+endobj
+xref
+0 33
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000202 00000 n 
+0000000272 00000 n 
+0000000347 00000 n 
+0000000425 00000 n 
+0000000493 00000 n 
+0000009463 00000 n 
+0000009619 00000 n 
+0000022703 00000 n 
+0000022860 00000 n 
+0000032500 00000 n 
+0000032658 00000 n 
+0000042046 00000 n 
+0000042204 00000 n 
+0000051008 00000 n 
+0000051166 00000 n 
+0000061160 00000 n 
+0000061318 00000 n 
+0000070911 00000 n 
+0000071069 00000 n 
+0000080293 00000 n 
+0000080451 00000 n 
+0000092058 00000 n 
+0000092216 00000 n 
+0000101586 00000 n 
+0000101744 00000 n 
+0000110644 00000 n 
+0000110802 00000 n 
+0000121152 00000 n 
+0000121310 00000 n 
+0000128205 00000 n 
+trailer
+<< /Size 33 /Root 1 0 R >>
+startxref
+128363
+%%EOF

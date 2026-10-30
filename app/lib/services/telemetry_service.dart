@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 /// Telemetry and Crash Reporting Service for Arthentic Mobile.
 /// Enforces zero-PII logging: scrubs emails, passwords, bearer tokens,
 /// IP addresses, and private cryptographic keys before transmitting or persisting.

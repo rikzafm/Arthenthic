@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:app/main.dart';
 import 'package:app/services/app_lock_service.dart';
 import 'package:app/features/auth/lock_screen.dart';
 import 'package:app/features/auth/app_lock_gate.dart';

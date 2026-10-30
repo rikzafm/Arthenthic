@@ -30,8 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<dynamic> _myApplications = [];
   List<dynamic> _adminApplications = [];
-  List<dynamic> _artistArtworks = [];
-  List<dynamic> _conditionReports = [];
 
   @override
   void initState() {
@@ -85,11 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
         final apps = await apiClient.getAdminApplications();
         if (mounted) setState(() => _adminApplications = apps);
       } else if (role == "artist") {
-        final works = await apiClient.getArtistArtworks();
-        if (mounted) setState(() => _artistArtworks = works);
+        await apiClient.getArtistArtworks();
       } else if (role == "conservator") {
-        final reps = await apiClient.getConditionReports();
-        if (mounted) setState(() => _conditionReports = reps);
+        await apiClient.getConditionReports();
       }
     } catch (_) {}
   }

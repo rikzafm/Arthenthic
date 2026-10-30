@@ -4,9 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:app/main.dart';
 import 'package:app/features/auth/welcome_screen.dart';
 import 'package:app/features/auth/login_screen.dart';
-import 'package:app/features/auth/signup_screen.dart';
-import 'package:app/features/auth/splash_screen.dart';
-import 'package:app/services/session_store.dart';
 import 'package:app/services/api_client.dart';
 
 void main() {
@@ -60,7 +57,7 @@ void main() {
   });
 
   testWidgets('Launch routing - Login to Sign Up screen and password strength validation', (WidgetTester tester) async {
-    await tester.pumpWidget(const ArthenticApp(home: const LoginScreen()));
+    await tester.pumpWidget(const ArthenticApp(home: LoginScreen()));
     await tester.pumpAndSettle();
 
     // Tap "Create one"

@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:app/services/api_client.dart';
-import 'package:app/services/telemetry_service.dart';
 
 void main() {
   group('Milestone 7: Release Monitoring & Jittered Backoff Tests', () {

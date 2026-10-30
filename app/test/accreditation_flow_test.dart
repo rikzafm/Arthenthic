@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:app/features/home/home_screen.dart';
 import 'package:app/services/api_client.dart';
-import 'package:app/services/session_store.dart';
 import 'package:app/services/app_lock_service.dart';
 
 void main() {

@@ -1710,7 +1710,6 @@ class ApiClient {
     }
     return {"success": false, "error": "Listing not found"};
   }
-  }
 }
 
 final apiClient = ApiClient();

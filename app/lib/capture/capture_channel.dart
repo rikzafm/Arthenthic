@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 class CaptureChannel {
   static const MethodChannel _channel = MethodChannel('com.arthentic.app/capture');
   static const String arCameraViewType = 'com.arthentic.app/ar_camera_view';
+  static const int defaultDepthWidth = 256;
+  static const int defaultDepthHeight = 192;
 
   static bool get isNativeIOs => !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 
@@ -16,7 +18,6 @@ class CaptureChannel {
       final bool available = await _channel.invokeMethod('isLiDARAvailable');
       return available;
     } on MissingPluginException {
-      // In simulator or web
       return false;
     } catch (_) {
       return false;
@@ -41,7 +42,7 @@ class CaptureChannel {
       final bool started = await _channel.invokeMethod('startSession');
       return started;
     } on MissingPluginException {
-      return true; // Mock mode
+      return true;
     } catch (_) {
       return false;
     }
@@ -83,12 +84,15 @@ class CaptureChannel {
           'pointIndex': pointIndex,
         });
         if (res != null) {
-          return Map<String, dynamic>.from(res);
+          final map = Map<String, dynamic>.from(res);
+          map.putIfAbsent('depthWidth', () => defaultDepthWidth);
+          map.putIfAbsent('depthHeight', () => defaultDepthHeight);
+          return map;
         }
       } catch (_) {}
     }
 
-    // Fallback simulated point capture with valid JPEG & Float32 depth buffer
+    // Fallback simulated point capture with valid JPEG & 256x192 Float32 depth buffer (ARKit sceneDepth resolution)
     const base64Jpeg =
         '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIs'
         'IxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy'
@@ -103,12 +107,12 @@ class CaptureChannel {
         'AKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/9k=';
     final photoBytes = base64Decode(base64Jpeg);
 
-    // Generate 128x128 Float32 depth buffer (0.14m + subtle weave relief std ~0.45mm)
-    final depthFloats = Float32List(128 * 128);
-    for (int y = 0; y < 128; y++) {
-      for (int x = 0; x < 128; x++) {
+    // Generate 256x192 Float32 depth buffer (0.14m + subtle weave relief std ~0.45mm)
+    final depthFloats = Float32List(defaultDepthWidth * defaultDepthHeight);
+    for (int y = 0; y < defaultDepthHeight; y++) {
+      for (int x = 0; x < defaultDepthWidth; x++) {
         final double weave = (sin(x * 0.45) * cos(y * 0.45)) * 0.00045;
-        depthFloats[y * 128 + x] = 0.14 + weave;
+        depthFloats[y * defaultDepthWidth + x] = 0.14 + weave;
       }
     }
     final depthBytes = depthFloats.buffer.asUint8List();
@@ -116,11 +120,13 @@ class CaptureChannel {
     return {
       'photoBytes': photoBytes,
       'depthBytes': depthBytes,
+      'depthWidth': defaultDepthWidth,
+      'depthHeight': defaultDepthHeight,
       'intrinsics': {
         'fx': 1420.5,
         'fy': 1420.5,
-        'cx': 64.0,
-        'cy': 64.0,
+        'cx': 128.0,
+        'cy': 96.0,
       },
       'telemetry': {
         'distanceCm': 14,
@@ -130,6 +136,22 @@ class CaptureChannel {
         'isLeveled': true,
         'pointIndex': pointIndex,
       }
+    };
+  }
+
+  /// B-02 / D-05: 8-Point Guided LiDAR + Macro RGB Surface Mesh Capture Coordinator.
+  static Future<Map<String, dynamic>> captureEightPointMesh({int pointsCount = 8}) async {
+    final List<Map<String, dynamic>> captures = [];
+    for (int pt = 1; pt <= pointsCount; pt++) {
+      final pointData = await capturePoint(pt);
+      captures.add(pointData);
+    }
+    return {
+      'feature_code': 'D-05',
+      'pointsCount': pointsCount,
+      'depthWidth': defaultDepthWidth,
+      'depthHeight': defaultDepthHeight,
+      'captures': captures,
     };
   }
 }

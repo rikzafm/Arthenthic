@@ -16,7 +16,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _isLoading = true;
   List<dynamic> _sessions = [];
-  List<dynamic> _auditEvents = [];
   bool _emailVerified = false;
   String _userEmail = "";
   String _displayName = "";

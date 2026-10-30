@@ -61,10 +61,6 @@ class DepthFeatureExtractor:
         residual_variance = float(np.var(distances))
         residual_std_mm = float(np.std(distances) * 1000.0) # in millimeters
 
-        # Flatness score: prints typically have residual std < 0.25mm
-        # Canvas typically has weave / impasto relief std > 0.4mm
-        is_flat_print = residual_std_mm < 0.35
-
         return normal, residual_variance, residual_std_mm
 
     def extract_features(self, depth_bytes: bytes, intrinsics: Dict[str, float]) -> Dict[str, Any]:

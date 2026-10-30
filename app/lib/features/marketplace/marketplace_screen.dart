@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/theme.dart';
+import '../../contracts/contract_config.dart';
 import '../../capture/capture_channel.dart';
 import '../../services/api_client.dart';
 import '../../services/wallet_service.dart';
@@ -755,29 +756,6 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         icon: const Icon(Icons.bolt_rounded, size: 18),
                         label: Text(
                           isSubmitting ? "Uploading Photo & Signing..." : "Sign & Publish to Gallery (Gasless)",
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.brandDark,
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-                              },
-                        icon: const Icon(Icons.bolt_rounded, size: 18),
-                        label: Text(
-                          isSubmitting ? "Signing EIP-712 Intent..." : "Sign & Publish to Gallery (Gasless)",
                           style: GoogleFonts.inter(fontWeight: FontWeight.w600),
                         ),
                         style: ElevatedButton.styleFrom(
@@ -1856,6 +1834,11 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
             ],
           ),
           const SizedBox(height: 6),
+          Text(
+            "Escrow Contract (${ArthenticContractConfig.baseSepoliaNetworkName}): ${ArthenticContractConfig.shortAddress(ArthenticContractConfig.arthenticEscrowAddress)}",
+            style: GoogleFonts.sourceCodePro(fontSize: 10.5, fontWeight: FontWeight.w600, color: const Color(0xFF92400E)),
+          ),
+          const SizedBox(height: 2),
           Text(
             "Deposit Tx: ${(escrow['deposit_tx_hash'] ?? '').toString().substring(0, 18)}...",
             style: GoogleFonts.sourceCodePro(fontSize: 11, color: AppTheme.textSecondary),

@@ -6,7 +6,6 @@ import '../../services/api_client.dart';
 import '../../services/session_store.dart';
 import '../../services/app_lock_service.dart';
 import '../shared/artistic_background.dart';
-import 'lock_screen.dart';
 import 'login_screen.dart';
 import 'welcome_screen.dart';
 
