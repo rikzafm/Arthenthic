@@ -25,6 +25,7 @@ Arthentic solves the trillion-dollar art world problem of counterfeits, provenan
 8. [Testing, Benchmarks & Verification](#testing-benchmarks--verification)
 9. [Pre-Seeded Demo Accounts](#pre-seeded-demo-accounts)
 10. [Network Configuration & Smart Contracts](#network-configuration--smart-contracts)
+11. [Architecture Decision Records (ADRs)](#architecture-decision-records-adrs)
 
 ---
 
@@ -571,6 +572,163 @@ When seeded via `seed_dev_users()`, the following accounts are available for loc
 - **`SC-CHIP-01` (Chip Collision Rejection):** An NFC chip UID hash can only be bound to exactly one token ID in history.
 - **`ADR-04` / `ADR-05` (Escrow Solvency & Conservation):** Total escrow liabilities equal exact ETH/ERC-20 deposits. Withdrawals are strictly limited to the buyer-verified 3-way split.
 - **`EIP-2` (Low-$s$ Signature Enforcement):** All ECDSA secp256k1 signatures are clamped to $s \le N/2$ to prevent transaction malleability.
+
+---
+
+## Architecture Decision Records (ADRs)
+
+This section documents the **why** behind major technical and product decisions in Arthentic. These are not obvious choices — each was made after evaluating alternatives against the requirements of a tamper-proof, high-stakes art authentication protocol.
+
+---
+
+### ADR-01 · Two-Factor Physical Authentication (Hardware + Biometric)
+
+**Decision:** Require both an NXP NTAG 424 DNA NFC chip *and* an iPhone LiDAR/optical surface scan to authenticate any artwork.
+
+**Why:**
+- NFC chips alone can be cloned and transplanted into a forgery. An embedded tamper loop (`TAMPER_PERM_OPEN`) deters removal, but a motivated attacker could still attempt it.
+- Optical/LiDAR surface fingerprints alone cannot be revoked or replaced if a chip is lost or damaged.
+- **Two independent factors create an insurmountable attack surface:** cloning the chip is futile if the canvas weave does not match, and replicating a micro-topology surface scan is futile without the embedded chip producing a valid CMAC counter.
+- This directly mirrors the physical-world "two-factor" standard — something you *have* (chip) + something you *are* (intrinsic surface).
+
+---
+
+### ADR-02 · NXP NTAG 424 DNA with SUN (Secure Unique NFC) — Not a Static QR Code or Plain NFC
+
+**Decision:** Use NXP NTAG 424 DNA chips with AES-128 CMAC Secure Dynamic Messaging (SDM/SUN), not static QR codes, plain NDEF NFC tags, or EPC RFID.
+
+**Why:**
+- **Static QR codes and plain NFC tags can be trivially photocopied.** Any printer or NFC writer can clone them.
+- **NTAG 424 DNA SDM dynamically re-signs every tap** with an AES-128 CMAC keyed MAC that includes the chip's UID and a monotonically increasing read counter. Each tap produces a cryptographically unique URL (`?uid=...&ctr=...&cmac=...`).
+- The anti-replay counter (`sun:ctr:{uid}` in Redis) rejects any tap that presents a counter equal to or lower than a previously validated tap, defeating recording and replay attacks.
+- The physical tamper loop (`TAMPER_PERM_OPEN`) provides a permanent, one-way signal if the chip is surgically extracted from the canvas.
+
+---
+
+### ADR-03 · iPhone LiDAR (`sceneDepth`) + 384-D Siamese CNN Weave Embedding — Not Just Image Hashing
+
+**Decision:** Combine iPhone 12 Pro+ ARKit `sceneDepth` point-cloud capture (`256×192` float32) with a 384-dimensional Siamese CNN/ViT optical embedding of canvas texture. Require ≥ 8800 bps (88.0%) cosine similarity to pass Level 2.
+
+**Why:**
+- **Perceptual hashing (pHash, dHash) is defeated by photo-quality printing.** A high-DPI inkjet print of a painting photograph scores near 100% on perceptual hashes.
+- **LiDAR alone is fragile** if the painting is photographed in 3D (e.g., with a structured-light scanner). A painting print on a textured substrate could fool a coarse depth map.
+- **Combining micro-topology (LiDAR) + weave texture (optical embedding)** creates a dual-channel fingerprint: the LiDAR flatness gate (surface variance σ², plane deviation, SNR) immediately rejects flat paper prints (~36.7% similarity), while the optical embedding distinguishes genuine canvas weave from synthetic materials.
+- The 88.0% threshold is calibrated empirically: genuine same-canvas re-scans average ~98.2%, impostor canvases average ~73.1%, and flat paper prints are gated out at the flatness check before reaching cosine comparison.
+
+---
+
+### ADR-04 · EIP-712 Typed Structured Data for All On-Chain Attestations — Not Raw `eth_sign`
+
+**Decision:** All protocol node signatures (genesis co-sign, verification attestations, escrow release, conservation consent, chip replacement) use EIP-712 typed structured data signed with the protocol's KMS key.
+
+**Why:**
+- **`eth_sign` and `personal_sign` are opaque.** Users (and auditors) cannot read what they are signing; only a hex blob is presented.
+- **EIP-712 renders the full domain separator, field names, and values** in MetaMask and hardware wallet UIs before the user approves. An artist co-signing a genesis payload sees `{ title, genesisVectorHash, chipIdHash, royaltyBps: 500 }` in plain text.
+- **Replay protection is built-in:** Each attestation includes `nonce`, `deadline`, and `chainId`. The `AttestationVerifier.sol` contract enforces deadline expiry, one-time nonce consumption, and chain-ID matching, making cross-chain or delayed replays impossible.
+- `ADR-04` is directly tested in `ArthenticProtocol.t.sol` as a Foundry invariant fuzz test.
+
+---
+
+### ADR-05 · Base L2 (EVM) for NFT + Escrow, Ethereum L1 for Merkle Anchoring — Not a Single Chain
+
+**Decision:** Deploy `ArthenticNFT` and `ArthenticEscrow` on Base L2 (chain IDs `84532`/`8453`), and batch-anchor provenance Merkle roots to Ethereum L1 (`MerkleAnchor.sol`) via a periodic batcher.
+
+**Why:**
+- **Ethereum L1 gas costs make sub-$1 art transactions uneconomical.** A single L1 ERC-721 mint during congestion can cost \$20–\$200 in gas. Base L2 brings this to fractions of a cent.
+- **Security still anchors to Ethereum L1:** Every 1,000 provenance events (or 24 hours), the indexer batches them into a Merkle root and calls `MerkleAnchor.anchorRoot()` on Ethereum Mainnet. This means the full provenance history has Ethereum-grade finality without paying per-event L1 gas.
+- **ERC-4337 Account Abstraction (Paymaster)** on Base L2 allows the protocol to sponsor gas for artists and collectors for their first few transactions, dramatically lowering onboarding friction without sacrificing security.
+
+---
+
+### ADR-06 · 3-Way Escrow Split (93.5% / 5.0% / 1.5%) Released Only on Physical Verification — Not on Delivery Confirmation
+
+**Decision:** Escrow funds can only be released by the buyer submitting a valid EIP-712 attestation produced by the protocol node after a successful Level 2 NFC + LiDAR scan. Carrier delivery confirmation alone is insufficient.
+
+**Why:**
+- **Delivery ≠ Authenticity.** A buyer could receive a substitute artwork (a forgery, a different painting, or a damaged piece) and a standard delivery-based escrow would auto-release to the seller. The physical verification requirement proves the *correct, undamaged* artwork arrived.
+- **The 5.0% artist resale royalty (ERC-2981 compliant)** is enforced on-chain at the smart-contract level, not via a voluntary UI toggle. This protects artists in secondary markets even when Arthentic's backend is bypassed by direct contract interaction.
+- The 1.5% protocol fee sustains KMS infrastructure, node operations, and insurance reserves.
+- **`ADR-05` (Escrow Solvency Invariant):** The Foundry invariant fuzz test `ArthenticInvariant.t.sol` verifies that total ETH liabilities always equal exact deposits — no scenario (including concurrent claims, edge-case royalty rounding, or expired refunds) can cause the contract to owe more ETH than it holds.
+
+---
+
+### ADR-07 · Argon2id for Passwords, Dual-Key JWT Rotation (`kid`), and Strict Refresh Token Family Revocation
+
+**Decision:** Use Argon2id (`time_cost=3`, `memory_cost=65536`, `parallelism=4`) for password hashing. Rotate access JWTs every 15 minutes. Rotate refresh tokens on every use and revoke the entire token *family* on reuse detection.
+
+**Why:**
+- **Argon2id is the 2015 Password Hashing Competition winner** and is memory-hard (defeats GPU/ASIC attacks) and side-channel resistant. The parameters are tuned to ~120ms on server hardware — enough to resist brute force while keeping login latency acceptable on mobile.
+- **15-minute access JWT lifetime:** Role changes (e.g., admin revoking a compromised gallery account) take effect within one token lifetime without requiring a live token revocation list. Sensitive endpoints additionally call `check_db=True` to verify role status in real-time.
+- **Refresh token family revocation:** If a stolen refresh token is used, the server detects token reuse (the original user's next request presents an already-consumed token), immediately revokes every token in that session family, and forces re-login. This is the mitigation for `TM-AUTH-1`.
+- **Dual-key rotation (`kid`):** JWTs include a key ID header, allowing the server to rotate signing secrets gracefully without instantly invalidating all active sessions.
+
+---
+
+### ADR-08 · iOS Keychain with `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` — Not `UserDefaults` or App Sandbox Files
+
+**Decision:** Refresh tokens are stored exclusively in the iOS Keychain using the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` access class. Access tokens are held in transient runtime memory only.
+
+**Why:**
+- **`UserDefaults` and app sandbox files are included in iCloud backups and iTunes backups.** A stolen backup (even an encrypted one, under some forensic scenarios) could expose tokens.
+- **`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` is automatically wiped if the device passcode is removed** and is never synced to iCloud Keychain or transferred to another device during a restore. This closes `TM-AUTH-5` and `TM-AUTH-6`.
+- Storing access tokens only in memory means they are never written to disk and are destroyed on app termination. A cold-boot or crash recovery requires a refresh token exchange, not a file system read.
+
+---
+
+### ADR-09 · 3-of-3 Multisig Chip Replacement — Not Unilateral Admin Override
+
+**Decision:** Replacing a damaged or tampered NFC chip on a registered artwork requires co-signatures from all three parties: **Collector (artwork owner) + Artist + Protocol Verifier (Gallery)**. Any single party can block a replacement.
+
+**Why:**
+- **Unilateral chip replacement is the highest-risk attack vector** for the entire system. If an admin or gallery could replace a chip alone, they could rebind a stolen painting's chip to a legitimate chain record — effectively laundering a theft on-chain.
+- Requiring the **artist** guarantees that the original creator authorizes the physical alteration.
+- Requiring the **collector (owner)** prevents a gallery or conservator from swapping a chip without the owner's knowledge.
+- Requiring the **protocol verifier** adds an institutional check that a fresh optical L2 scan (≥ 8800 bps) confirms the correct artwork before the new chip is bound.
+- This design is inspired by the 3-of-5 Gnosis Safe governance model used for protocol upgrades, applied to physical hardware management.
+
+---
+
+### ADR-10 · FastAPI Modular Monolith — Not Microservices
+
+**Decision:** The backend is a single deployable FastAPI application with internal module boundaries (`server/auth/`, `server/node/`, `server/indexer/`, `server/paymaster/`, `server/routes/`), not separate microservices.
+
+**Why:**
+- **Distributed transactions across microservices are complex** when atomicity matters. For example, a genesis mint must atomically write to PostgreSQL, pin to Arweave/IPFS, and broadcast to the blockchain. Coordinating this across three separate services requires distributed sagas or outbox patterns — significant added complexity for a v1 system.
+- **A modular monolith allows surgical extraction** of individual modules (e.g., the Protocol Node or Paymaster) into independent services later, without rewriting internal interfaces. Module boundaries are enforced as Python package imports, not network calls.
+- **Operational simplicity:** A single Docker container is deployed, monitored, and rolled back. The CI/CD pipeline runs in one `pytest` invocation across all 100 backend tests with shared fixtures and an in-memory SQLite database.
+
+---
+
+### ADR-11 · PostgreSQL 16 (Production) + SQLite (Development/Test) via SQLAlchemy — Not a NoSQL Store
+
+**Decision:** All structured data (users, artworks, captures, escrows, provenance events) is stored in a relational database with a strict schema enforced by SQLAlchemy 2.0 ORM and Alembic migrations. PostgreSQL is used in production; SQLite is used in local development and CI tests.
+
+**Why:**
+- **Art provenance is inherently relational.** An artwork has many captures; a capture belongs to one artwork; a chip replacement has multiple approvals; an escrow transaction links a listing to a buyer, seller, carrier, and on-chain transaction hash. ACID transactions and foreign key constraints prevent orphaned records and data corruption at the database level.
+- **`SC-GEN-01` (Genesis Hash Immutability)** is enforced by a PostgreSQL trigger (`forbid_genesis_change()`), not just application-layer checks. This means even a direct database connection cannot overwrite a committed `genesis_hash` — the trigger raises an exception.
+- **Redis 7** handles the *hotpath* (SUN anti-replay counters, rate limiters, paymaster quotas) where atomic Lua scripts provide compare-and-set semantics without full ACID overhead. This offloads the high-frequency per-tap counter increment from PostgreSQL.
+
+---
+
+### ADR-12 · Multi-Region KMS Cluster (US / EU / AP) with Low-s EIP-2 Signature Clamping
+
+**Decision:** Protocol signing keys live exclusively in cloud KMS (AWS KMS or HashiCorp Vault Transit), never in application memory or environment variables. Signatures are clamped to low-s form per EIP-2.
+
+**Why:**
+- **Private keys in environment variables or config files** are routinely leaked through misconfigured CI/CD pipelines, Docker image layers, and log aggregation. KMS ensures keys are never extractable — even operators cannot export the raw private key material.
+- **Multi-region failover (US-East-1 primary → EU-West-1 secondary → AP-Southeast-1 tertiary)** ensures the protocol can continue signing attestations and releasing escrow even during a regional AWS outage. The cluster uses automated health probes and switches signing regions within seconds.
+- **Low-s EIP-2 clamping:** Ethereum signatures have two valid `(r, s)` values for any message (`s` and `N - s`). Without clamping, an adversary can produce a second valid signature for the same payload without knowing the private key, enabling transaction malleability attacks. All signatures are normalized to `s ≤ N/2` before broadcasting.
+
+---
+
+### ADR-13 · Flutter for Cross-Platform UI + Native Swift Bridges for Hardware — Not React Native or Pure Web
+
+**Decision:** The client app is built in Flutter (Dart), with native Swift modules (`AppDelegate.swift`) handling CoreNFC NTAG 424 DNA SDM provisioning and ARKit `sceneDepth` LiDAR capture via Flutter platform channels.
+
+**Why:**
+- **LiDAR (`ARKit sceneDepth`) and CoreNFC NTAG 424 DNA** are exclusive to the Apple ecosystem and have no cross-platform wrapper in React Native or Capacitor that exposes the low-level APIs needed (raw float32 depth buffers, SUN CMAC NDEF parsing). Native Swift bridges via Flutter platform channels are the only viable path.
+- **Flutter renders a single Dart codebase** to iOS native, Web (institutional consoles), and potentially Android — reducing duplication of the UI and business logic for auth, marketplace, and provenance screens.
+- The responsive shell (< 900px → mobile `BottomNavigationBar`; ≥ 900px → desktop `NavigationRail`) means Gallery, Conservator, and Admin institutional web consoles share the same codebase as the mobile scanner app.
 
 ---
 
