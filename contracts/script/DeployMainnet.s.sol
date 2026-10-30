@@ -10,7 +10,6 @@ interface VmScript {
     function startBroadcast() external;
     function stopBroadcast() external;
     function envAddress(string calldata name) external view returns (address);
-    function envOr(string calldata name, address defaultValue) external view returns (address);
 }
 
 /// @title DeployMainnet
@@ -24,22 +23,36 @@ contract DeployMainnet {
         external
         returns (ArthenticNFT nft, ArthenticEscrow escrow, MerkleAnchor anchor)
     {
+        // 1. Resolve multi-sig, timelock, and KMS addresses strictly from environment (no fallback defaults)
+        address gnosisSafe = vm.envAddress("MAINNET_GNOSIS_SAFE");
+        address timelock   = vm.envAddress("MAINNET_TIMELOCK");
+        address treasury   = vm.envAddress("MAINNET_TREASURY_SAFE");
+        address kmsNode    = vm.envAddress("MAINNET_KMS_SIGNER");
+        address anchorer   = vm.envAddress("MAINNET_ANCHORER_NODE");
+
+        // 2. Fail-fast assertions against zero-address or placeholder burn addresses
+        require(gnosisSafe != address(0), "DeployMainnet: MAINNET_GNOSIS_SAFE cannot be zero address");
+        require(timelock != address(0), "DeployMainnet: MAINNET_TIMELOCK cannot be zero address");
+        require(treasury != address(0), "DeployMainnet: MAINNET_TREASURY_SAFE cannot be zero address");
+        require(kmsNode != address(0), "DeployMainnet: MAINNET_KMS_SIGNER cannot be zero address");
+        require(anchorer != address(0), "DeployMainnet: MAINNET_ANCHORER_NODE cannot be zero address");
+
+        require(gnosisSafe != 0x1111111111111111111111111111111111111111, "DeployMainnet: invalid placeholder gnosisSafe");
+        require(timelock   != 0x2222222222222222222222222222222222222222, "DeployMainnet: invalid placeholder timelock");
+        require(treasury   != 0x3333333333333333333333333333333333333333, "DeployMainnet: invalid placeholder treasury");
+        require(kmsNode    != 0x4444444444444444444444444444444444444444, "DeployMainnet: invalid placeholder kmsNode");
+        require(anchorer   != 0x5555555555555555555555555555555555555555, "DeployMainnet: invalid placeholder anchorer");
+
+        // 3. Begin broadcast only after all addresses are validated
         vm.startBroadcast();
 
-        // 1. Resolve multi-sig, timelock, and KMS addresses from environment or fall back to verified defaults
-        address gnosisSafe = vm.envOr("MAINNET_GNOSIS_SAFE", 0x1111111111111111111111111111111111111111);
-        address timelock   = vm.envOr("MAINNET_TIMELOCK", 0x2222222222222222222222222222222222222222);
-        address treasury   = vm.envOr("MAINNET_TREASURY_SAFE", 0x3333333333333333333333333333333333333333);
-        address kmsNode    = vm.envOr("MAINNET_KMS_SIGNER", 0x4444444444444444444444444444444444444444);
-        address anchorer   = vm.envOr("MAINNET_ANCHORER_NODE", 0x5555555555555555555555555555555555555555);
-
-        // 2. Deploy ArthenticNFT on Base Mainnet with Gnosis Safe admin & KMS protocol node
+        // 4. Deploy ArthenticNFT on Base Mainnet with Gnosis Safe admin & KMS protocol node
         nft = new ArthenticNFT(gnosisSafe, kmsNode);
 
-        // 3. Deploy ArthenticEscrow on Base Mainnet with Treasury Safe and Gnosis Safe admin
+        // 5. Deploy ArthenticEscrow on Base Mainnet with Treasury Safe and Gnosis Safe admin
         escrow = new ArthenticEscrow(address(nft), treasury, gnosisSafe);
 
-        // 4. Deploy MerkleAnchor on Ethereum L1 with Timelock governance & Anchorer role
+        // 6. Deploy MerkleAnchor on Ethereum L1 with Timelock governance & Anchorer role
         anchor = new MerkleAnchor(timelock, anchorer);
 
         vm.stopBroadcast();

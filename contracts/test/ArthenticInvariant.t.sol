@@ -47,6 +47,37 @@ contract MockUSDC is IERC20 {
     }
 }
 
+contract ReentrantSeller {
+    ArthenticEscrow public immutable escrow;
+    uint256 public targetListingId;
+    bool public attacked;
+    bool public reentrancyRevertedWithExpectedSelector;
+    bytes public capturedRevertData;
+
+    constructor(address payable _escrow) {
+        escrow = ArthenticEscrow(_escrow);
+    }
+
+    function setTargetListing(uint256 _listingId) external {
+        targetListingId = _listingId;
+    }
+
+    receive() external payable {
+        if (!attacked) {
+            attacked = true;
+            // Attempt to re-enter escrow via refund() during payout
+            (bool success, bytes memory returnData) = address(escrow).call(
+                abi.encodeWithSelector(escrow.refund.selector, targetListingId)
+            );
+            require(!success, "Reentrancy call must fail");
+            if (returnData.length >= 4 && bytes4(returnData) == ArthenticEscrow.REENTRANCY.selector) {
+                reentrancyRevertedWithExpectedSelector = true;
+            }
+            capturedRevertData = returnData;
+        }
+    }
+}
+
 /**
  * @title ArthenticInvariantTest
  * @notice Wave 3 Milestone 6 Invariant Fuzzing & Security Audit Suite:
@@ -109,6 +140,21 @@ contract ArthenticInvariantTest {
     function _signDigest(uint256 pk, bytes32 digest) internal pure returns (bytes memory) {
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(pk, digest);
         return abi.encodePacked(r, s, v);
+    }
+
+    function _signEscrowAttestation(AttestationVerifier.Attestation memory tapAtt) internal view returns (bytes memory) {
+        bytes32 structHash = keccak256(
+            abi.encode(
+                escrow.ATTESTATION_TYPEHASH(),
+                tapAtt.tokenId,
+                tapAtt.sunDigest,
+                tapAtt.similarityBps,
+                tapAtt.deadline,
+                tapAtt.nonce
+            )
+        );
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", escrow.DOMAIN_SEPARATOR(), structHash));
+        return _signDigest(NODE_PK, digest);
     }
 
     function _mintArtwork(bytes32 genesisVec, bytes32 chipHash) internal returns (uint256 tokenId) {
@@ -206,17 +252,238 @@ contract ArthenticInvariantTest {
         nft.genesisMint(artist, genesis2, chipHash, uri, artistSig);
     }
 
-    /// @notice Invariant 3: ADR-04/ADR-05 Escrow Solvency Invariant
-    ///         Sum of Seller (93.5%), Artist (5.0%), and Treasury (1.5%) MUST exactly equal deposit
-    function testFuzz_Invariant_ADR04_ADR05_EscrowSolvency(uint256 price) public pure {
-        // Bound price between 10,000 wei and 1,000,000 ether to avoid uint overflow
-        vm.assume(price >= 10_000 && price <= 1_000_000 ether);
+    /// @notice Invariant 3A: ADR-04/ADR-05 Escrow Solvency Invariant for Native ETH
+    ///         Executes real createListing, deposit, and claim against ArthenticEscrow.
+    ///         Asserts zero escrow balance leakage and exact 93.5% / 5.0% / 1.5% payout conservation.
+    function testFuzz_Invariant_ADR04_ADR05_EscrowSolvency_ETH(uint256 price, uint64 duration) public {
+        vm.assume(price >= 10_000 wei && price <= 500 ether);
+        vm.assume(duration >= 1 days && duration <= 30 days);
 
-        uint256 royalty = (price * 500) / 10_000;      // 5.0%
-        uint256 protocolFee = (price * 150) / 10_000;  // 1.5%
-        uint256 sellerShare = price - royalty - protocolFee; // 93.5%
+        uint256 tokenId = _mintArtwork(
+            keccak256(abi.encodePacked("fuzz_eth_genesis", price, duration)),
+            keccak256(abi.encodePacked("fuzz_eth_chip", price, duration))
+        );
 
-        require(sellerShare + royalty + protocolFee == price, "INVARIANT VIOLATION: Escrow accounting leak");
+        address seller = address(0x5E11E2);
+        vm.prank(artist);
+        nft.transferFrom(artist, seller, tokenId);
+
+        vm.prank(seller);
+        nft.approve(address(escrow), tokenId);
+
+        vm.prank(seller);
+        uint256 listingId = escrow.createListing(tokenId, address(0), price, uint64(block.timestamp + duration));
+
+        // Pre-condition checks: Escrow holds NFT, 0 ETH
+        require(nft.ownerOf(tokenId) == address(escrow), "Escrow must hold NFT before deposit");
+        require(address(escrow).balance == 0, "Escrow balance must be 0 before deposit");
+
+        // Buyer deposits ETH
+        vm.deal(buyer, price);
+        vm.prank(buyer);
+        escrow.deposit{value: price}(listingId);
+
+        // Escrow holds exact deposit price
+        require(address(escrow).balance == price, "Escrow balance must equal deposit price");
+
+        // Protocol node signs EIP-712 Attestation matching ArthenticEscrow domain
+        AttestationVerifier.Attestation memory tapAtt = AttestationVerifier.Attestation({
+            tokenId: tokenId,
+            sunDigest: keccak256(abi.encodePacked("nfc_sun_tap_eth", listingId)),
+            similarityBps: 0,
+            deadline: uint64(block.timestamp + 300),
+            nonce: keccak256(abi.encodePacked("nonce_eth", listingId, price, block.timestamp))
+        });
+        bytes memory nodeSig = _signEscrowAttestation(tapAtt);
+
+        uint256 sellerBalBefore   = seller.balance;
+        uint256 artistBalBefore   = artist.balance;
+        uint256 treasuryBalBefore = treasurySafe.balance;
+
+        // Buyer claims
+        vm.prank(buyer);
+        escrow.claim(listingId, tapAtt, nodeSig);
+
+        // Post-condition checks:
+        require(nft.ownerOf(tokenId) == buyer, "Buyer must hold NFT after claim");
+
+        // 3-way split conservation (93.5% seller, 5.0% artist, 1.5% treasury)
+        {
+            uint256 expectedRoyalty     = (price * 500) / 10_000;
+            uint256 expectedProtocolFee = (price * 150) / 10_000;
+            uint256 expectedSellerNet   = price - expectedRoyalty - expectedProtocolFee;
+
+            require(seller.balance - sellerBalBefore == expectedSellerNet, "Seller must receive 93.5%");
+            require(artist.balance - artistBalBefore == expectedRoyalty, "Artist must receive 5.0%");
+            require(treasurySafe.balance - treasuryBalBefore == expectedProtocolFee, "Treasury must receive 1.5%");
+            require(expectedSellerNet + expectedRoyalty + expectedProtocolFee == price, "INVARIANT VIOLATION: Payout sum != price");
+        }
+
+        // Escrow balance is strictly 0 (no balance leak)
+        require(address(escrow).balance == 0, "INVARIANT VIOLATION: Solvency leak - ETH stuck in escrow");
+    }
+
+    /// @notice Invariant 3B: ADR-04/ADR-05 Escrow Solvency Invariant for ERC-20 (USDC)
+    ///         Executes real USDC listing, deposit, and claim against ArthenticEscrow.
+    ///         Asserts zero token leakage and exact 93.5% / 5.0% / 1.5% payout conservation.
+    function testFuzz_Invariant_ADR04_ADR05_EscrowSolvency_USDC(uint256 price, uint64 duration) public {
+        vm.assume(price >= 10_000 && price <= 1_000_000 * 1e6); // 0.01 USDC to 1M USDC
+        vm.assume(duration >= 1 days && duration <= 30 days);
+
+        uint256 tokenId = _mintArtwork(
+            keccak256(abi.encodePacked("fuzz_usdc_genesis", price, duration)),
+            keccak256(abi.encodePacked("fuzz_usdc_chip", price, duration))
+        );
+
+        address seller = address(0x5E11E2);
+        vm.prank(artist);
+        nft.transferFrom(artist, seller, tokenId);
+
+        vm.prank(seller);
+        nft.approve(address(escrow), tokenId);
+
+        vm.prank(seller);
+        uint256 listingId = escrow.createListing(tokenId, address(usdc), price, uint64(block.timestamp + duration));
+
+        // Pre-condition checks: Escrow holds NFT, 0 USDC
+        require(nft.ownerOf(tokenId) == address(escrow), "Escrow must hold NFT before deposit");
+        require(usdc.balanceOf(address(escrow)) == 0, "Escrow USDC balance must be 0 before deposit");
+
+        // Buyer deposits USDC
+        usdc.mint(buyer, price);
+        vm.prank(buyer);
+        usdc.approve(address(escrow), price);
+        vm.prank(buyer);
+        escrow.deposit(listingId);
+
+        // Escrow holds exact USDC price
+        require(usdc.balanceOf(address(escrow)) == price, "Escrow USDC balance must equal deposit");
+
+        // Protocol node signs EIP-712 Attestation
+        AttestationVerifier.Attestation memory tapAtt = AttestationVerifier.Attestation({
+            tokenId: tokenId,
+            sunDigest: keccak256(abi.encodePacked("nfc_sun_tap_usdc", listingId)),
+            similarityBps: 0,
+            deadline: uint64(block.timestamp + 300),
+            nonce: keccak256(abi.encodePacked("nonce_usdc", listingId, price, block.timestamp))
+        });
+        bytes memory nodeSig = _signEscrowAttestation(tapAtt);
+
+        uint256 sellerBalBefore   = usdc.balanceOf(seller);
+        uint256 artistBalBefore   = usdc.balanceOf(artist);
+        uint256 treasuryBalBefore = usdc.balanceOf(treasurySafe);
+
+        // Buyer claims
+        vm.prank(buyer);
+        escrow.claim(listingId, tapAtt, nodeSig);
+
+        // Post-condition checks:
+        require(nft.ownerOf(tokenId) == buyer, "Buyer must hold NFT after claim");
+
+        {
+            uint256 expectedRoyalty     = (price * 500) / 10_000;
+            uint256 expectedProtocolFee = (price * 150) / 10_000;
+            uint256 expectedSellerNet   = price - expectedRoyalty - expectedProtocolFee;
+
+            require(usdc.balanceOf(seller) - sellerBalBefore == expectedSellerNet, "Seller must receive 93.5% USDC");
+            require(usdc.balanceOf(artist) - artistBalBefore == expectedRoyalty, "Artist must receive 5.0% USDC");
+            require(usdc.balanceOf(treasurySafe) - treasuryBalBefore == expectedProtocolFee, "Treasury must receive 1.5% USDC");
+            require(expectedSellerNet + expectedRoyalty + expectedProtocolFee == price, "INVARIANT VIOLATION: USDC payout sum != price");
+        }
+
+        require(usdc.balanceOf(address(escrow)) == 0, "INVARIANT VIOLATION: Solvency leak - USDC stuck in escrow");
+    }
+
+    /// @notice Invariant 3C: C-12 Post-Expiry Auto-Refund Invariant
+    ///         Fuzzes listing and deposit, advances past expiry, asserts 100% refund and NFT return.
+    function testFuzz_Invariant_EscrowRefund(uint256 price, uint64 duration) public {
+        vm.assume(price >= 10_000 wei && price <= 500 ether);
+        vm.assume(duration >= 1 days && duration <= 30 days);
+
+        bytes32 genesisVec = keccak256(abi.encodePacked("fuzz_refund_genesis", price, duration));
+        bytes32 chipHash   = keccak256(abi.encodePacked("fuzz_refund_chip", price, duration));
+        uint256 tokenId    = _mintArtwork(genesisVec, chipHash);
+
+        address seller = address(0x5E11E2);
+        vm.prank(artist);
+        nft.transferFrom(artist, seller, tokenId);
+
+        uint64 expiry = uint64(block.timestamp + duration);
+        vm.prank(seller);
+        nft.approve(address(escrow), tokenId);
+
+        vm.prank(seller);
+        uint256 listingId = escrow.createListing(tokenId, address(0), price, expiry);
+
+        // Buyer deposits ETH
+        vm.deal(buyer, price);
+        vm.prank(buyer);
+        escrow.deposit{value: price}(listingId);
+        require(address(escrow).balance == price, "Escrow balance must equal deposit");
+
+        // Advance block.timestamp past expiry
+        vm.warp(block.timestamp + duration + 1);
+
+        uint256 buyerBalBefore = buyer.balance;
+        vm.prank(buyer);
+        escrow.refund(listingId);
+
+        // Invariants:
+        require(buyer.balance - buyerBalBefore == price, "Buyer must receive 100% refund");
+        require(nft.ownerOf(tokenId) == seller, "Seller must receive NFT back");
+        require(address(escrow).balance == 0, "Escrow balance must be exactly 0 after refund");
+    }
+
+    /// @notice Invariant 3D: Reentrancy protection invariant
+    ///         Ensures reentrancy during escrow payout reverts with REENTRANCY()
+    function test_Invariant_ReentrancyProtection() public {
+        ReentrantSeller reentrantSeller = new ReentrantSeller(payable(address(escrow)));
+
+        bytes32 genesisVec = keccak256("reentrancy_genesis_vec");
+        bytes32 chipHash   = keccak256("reentrancy_chip_hash");
+        uint256 tokenId    = _mintArtwork(genesisVec, chipHash);
+
+        // Transfer NFT to reentrantSeller
+        vm.prank(artist);
+        nft.transferFrom(artist, address(reentrantSeller), tokenId);
+
+        uint256 price = 10 ether;
+        uint64 expiry = uint64(block.timestamp + 7 days);
+
+        vm.prank(address(reentrantSeller));
+        nft.approve(address(escrow), tokenId);
+
+        vm.prank(address(reentrantSeller));
+        uint256 listingId = escrow.createListing(tokenId, address(0), price, expiry);
+        reentrantSeller.setTargetListing(listingId);
+
+        // Buyer deposits ETH
+        vm.deal(buyer, price);
+        vm.prank(buyer);
+        escrow.deposit{value: price}(listingId);
+
+        // Prepare Protocol Node Attestation
+        AttestationVerifier.Attestation memory tapAtt = AttestationVerifier.Attestation({
+            tokenId: tokenId,
+            sunDigest: keccak256("reentrancy_nfc_tap"),
+            similarityBps: 0,
+            deadline: uint64(block.timestamp + 300),
+            nonce: keccak256("reentrancy_test_nonce")
+        });
+        bytes memory nodeSig = _signEscrowAttestation(tapAtt);
+
+        // Buyer claims - during payout, escrow calls reentrantSeller.receive()
+        vm.prank(buyer);
+        escrow.claim(listingId, tapAtt, nodeSig);
+
+        // Verify that reentrancy was attempted and rejected with REENTRANCY()
+        require(reentrantSeller.attacked(), "Reentrancy attack was not attempted");
+        require(
+            reentrantSeller.reentrancyRevertedWithExpectedSelector(),
+            "Reentrancy call did not revert with REENTRANCY() selector"
+        );
+        require(nft.ownerOf(tokenId) == buyer, "Buyer must receive NFT after guarded claim");
+        require(address(escrow).balance == 0, "Escrow balance must be 0");
     }
 
     /// @notice Invariant 4: ADR-01 5.0% Royalty compliance invariant

@@ -10,7 +10,6 @@ interface VmScript {
     function startBroadcast() external;
     function stopBroadcast() external;
     function envAddress(string calldata name) external view returns (address);
-    function envOr(string calldata name, address defaultValue) external view returns (address);
 }
 
 /// @title TransferGovernance
@@ -23,11 +22,24 @@ contract TransferGovernance {
     VmScript internal constant vm = VmScript(address(uint160(uint256(keccak256("hevm cheat code")))));
 
     function run() external {
-        address gnosisSafe = vm.envOr("MAINNET_GNOSIS_SAFE", 0x1111111111111111111111111111111111111111);
-        address timelock   = vm.envOr("MAINNET_TIMELOCK", 0x2222222222222222222222222222222222222222);
-        address nftAddr    = vm.envOr("MAINNET_NFT_ADDRESS", 0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA);
-        address escrowAddr = vm.envOr("MAINNET_ESCROW_ADDRESS", 0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB);
-        address anchorAddr = vm.envOr("MAINNET_ANCHOR_ADDRESS", 0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC);
+        address gnosisSafe = vm.envAddress("MAINNET_GNOSIS_SAFE");
+        address timelock   = vm.envAddress("MAINNET_TIMELOCK");
+        address nftAddr    = vm.envAddress("MAINNET_NFT_ADDRESS");
+        address escrowAddr = vm.envAddress("MAINNET_ESCROW_ADDRESS");
+        address anchorAddr = vm.envAddress("MAINNET_ANCHOR_ADDRESS");
+
+        // Fail-fast assertions against zero-address or placeholder burn addresses
+        require(gnosisSafe != address(0), "TransferGovernance: MAINNET_GNOSIS_SAFE cannot be zero address");
+        require(timelock   != address(0), "TransferGovernance: MAINNET_TIMELOCK cannot be zero address");
+        require(nftAddr    != address(0), "TransferGovernance: MAINNET_NFT_ADDRESS cannot be zero address");
+        require(escrowAddr != address(0), "TransferGovernance: MAINNET_ESCROW_ADDRESS cannot be zero address");
+        require(anchorAddr != address(0), "TransferGovernance: MAINNET_ANCHOR_ADDRESS cannot be zero address");
+
+        require(gnosisSafe != 0x1111111111111111111111111111111111111111, "TransferGovernance: invalid placeholder gnosisSafe");
+        require(timelock   != 0x2222222222222222222222222222222222222222, "TransferGovernance: invalid placeholder timelock");
+        require(nftAddr    != 0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa, "TransferGovernance: invalid placeholder nftAddr");
+        require(escrowAddr != 0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB, "TransferGovernance: invalid placeholder escrowAddr");
+        require(anchorAddr != 0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC, "TransferGovernance: invalid placeholder anchorAddr");
 
         vm.startBroadcast();
 
